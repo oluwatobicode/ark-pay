@@ -11,6 +11,7 @@ import Documentation from "./pages/Documentation";
 import Settings from "./pages/Settings";
 import User from "./pages/User";
 import ResetPassword from "./pages/ResetPassoword";
+import NewPassword from "./pages/NewPassword";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/otp" element={<VerifyUser />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/verifyemail" element={<ResetPassword />} />
+        <Route path="/resetpassword" element={<NewPassword />} />
         <Route
           element={
             <ProtectedRoutes>

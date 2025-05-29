@@ -65,7 +65,7 @@ function Login() {
                 name="password"
               />
               <button
-                onClick={() => navigate("/resetpassword")}
+                onClick={() => navigate("/verifyemail")}
                 className="text-right mt-2 underline font-normal text-[#020267] leading-[20.72px] text-[13px] cursor-pointer"
               >
                 Forgot Password? Reset

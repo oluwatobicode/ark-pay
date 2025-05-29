@@ -27,7 +27,7 @@ const Sidebar = () => {
                   className={`${({ isActive }) =>
                     isActive
                       ? "active"
-                      : ""}} flex items-center gap-[5px] font-fontThree pl-3`}
+                      : ""}} flex items-center gap-[5px] pl-3`}
                 >
                   <BiCategory size={20} />
                   <span> Dashboard</span>
@@ -46,16 +46,15 @@ const Sidebar = () => {
                 </NavLink>
               </li>
               <li className="text-[16.83px] leading-[22.72px] font-normal font-fontThree">
-                <NavLink
-                  to="/documentation"
-                  className={`${({ isActive }) =>
-                    isActive
-                      ? "active"
-                      : ""}} flex items-center gap-[5px] font-fontThree pl-3`}
-                >
+                <button className="flex items-center gap-[5px] pl-3">
                   <BiWalletAlt />
-                  <span>Documentation</span>
-                </NavLink>
+                  <a
+                    href="https://arkade-base.gitbook.io/arkpay"
+                    target="blank"
+                  >
+                    Documentation
+                  </a>
+                </button>
               </li>
               <li className="text-[16.83px] leading-[22.72px] font-normal font-fontThree">
                 <NavLink
