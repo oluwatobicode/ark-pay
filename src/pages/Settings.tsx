@@ -1,9 +1,7 @@
+import SettingsLayout from "../components/settings/SettingsLayout";
+
 const Settings = () => {
-  return (
-    <div>
-      <h1>Hi i am the settings page!</h1>
-    </div>
-  );
+  return <SettingsLayout />;
 };
 
 export default Settings;

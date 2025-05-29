@@ -26,7 +26,7 @@ function OTPInput({ length = 4, onComplete }: InputProps) {
       inputRef.current[index - 1]?.focus();
     }
 
-    //if user has enterd alll the digits , grab the digits and set as an argumrnt to the onComplete function
+    //if user has entered alll the digits , grab the digits and set as an argument to the onComplete function
 
     if (newPin.every((digit) => digit != " ")) {
       onComplete(newPin.join(""));
@@ -73,7 +73,10 @@ function OTPInput({ length = 4, onComplete }: InputProps) {
             </p>
           </button>
         </div>
-        <button className="md:w-[350px] w-[300px] h-[50px] bg-[#020267] cursor-pointer text-[#ffff] rounded-md mb-5">
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="md:w-[350px] w-[300px] h-[50px] bg-[#020267] cursor-pointer text-[#ffff] rounded-md mb-5"
+        >
           Verify
         </button>
       </div>

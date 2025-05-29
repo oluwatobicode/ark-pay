@@ -1,4 +1,4 @@
-import { BiBell } from "react-icons/bi";
+import { BiBell, BiSearch } from "react-icons/bi";
 import { NavLink } from "react-router";
 
 const Navbar = () => {
@@ -7,13 +7,17 @@ const Navbar = () => {
       <nav className="flex flex-row items-center justify-between ">
         <h1 className="text-[20px] font-bold leading-[45px]">Dashboard</h1>
 
-        <div className="">
+        <div className="relative">
+          <BiSearch
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+          />
           <input
             type="text"
             name=""
-            placeholder="eaSearch by ID, product, or others..."
+            placeholder="Search by ID, product, or others..."
             id=""
-            className="w-[352.38px] px-3 py-2 border border-gray-300 rounded-[6px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-[352.38px] text-[12.53px] pl-10 pr-3 py-2 border border-gray-300 rounded-[6px] focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 

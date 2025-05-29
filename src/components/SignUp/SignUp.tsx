@@ -102,7 +102,10 @@ function SignUp() {
               />
             </div>
 
-            <button className="w-[300px] h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]">
+            <button
+              onClick={() => navigate("/otp")}
+              className="cursor-pointer w-[300px] h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]"
+            >
               Sign Up
             </button>
           </form>
