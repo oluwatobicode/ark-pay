@@ -15,7 +15,7 @@ interface UserFormData {
 const UserForm = ({
   FirstName = "Noah",
   LastName = "Billamin",
-  Email = "noahbillamin@gmail.com",
+  Email = "noabiliaminfirst@gmail.com",
   Country = "Canada",
   UserId = 234148685,
   BankName = "Kuda",

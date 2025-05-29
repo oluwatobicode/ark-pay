@@ -10,6 +10,7 @@ import Transactions from "./pages/Transactions";
 import Documentation from "./pages/Documentation";
 import Settings from "./pages/Settings";
 import User from "./pages/User";
+import ResetPassword from "./pages/ResetPassoword";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/otp" element={<VerifyUser />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route
           element={
             <ProtectedRoutes>

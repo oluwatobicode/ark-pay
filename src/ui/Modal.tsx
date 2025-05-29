@@ -94,18 +94,11 @@ function Window({ children, name }: WindowProps): ReactElement | null {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 w-full h-screen transition-all duration-500 bg-[#0000004D] backdrop-blur-[4px] z-[1000] flex items-center justify-center p-4">
       <div
         ref={ref}
-        className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl"
+        className="bg-white p-6 max-w-md w-[497.31px] h-[400px] rounded-[36.15px] shadow-xl transform transition-all duration-300 scale-100 flex flex-col items-center justify-center"
       >
-        {/* Close button */}
-        <button
-          onClick={close}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
-        >
-          ×
-        </button>
         {children}
       </div>
     </div>,

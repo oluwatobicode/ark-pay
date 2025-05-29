@@ -39,7 +39,7 @@ function Login() {
           Sign In
         </h1>
         <p className="font-medium text-[20px] leading-[100%] mb-5">
-          Create an account with <span className="font-bold">ArkPay</span>
+          <span className="font-bold">ArkPay</span> welcome's you back
         </p>
         <div className="flex flex-col">
           <form action="" onSubmit={handleSubmit}>
@@ -64,8 +64,11 @@ function Login() {
                 value={loginFormData.password}
                 name="password"
               />
-              <button className="text-right mt-2 underline font-normal text-[#020267] leading-[20.72px] text-[13px] cursor-pointer">
-                Forgot Password?Reset
+              <button
+                onClick={() => navigate("/resetpassword")}
+                className="text-right mt-2 underline font-normal text-[#020267] leading-[20.72px] text-[13px] cursor-pointer"
+              >
+                Forgot Password? Reset
               </button>
             </div>
 

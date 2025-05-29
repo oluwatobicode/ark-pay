@@ -10,7 +10,7 @@ const DashBoardCards = () => {
             Total transactions
           </h1>
           <p className="text-[19.01px] leading-[28.93px] font-semibold">
-            100,000
+            ₦100,000
           </p>
         </div>
         <div className="bg-[#264697] p-2 rounded-full">
@@ -24,7 +24,7 @@ const DashBoardCards = () => {
             Total Amount Processed
           </h1>
           <p className="text-[19.01px] leading-[28.93px] font-semibold">
-            500,000
+            ₦500,000
           </p>
         </div>
         <div className="bg-[#264697] p-2 rounded-full">
@@ -38,7 +38,7 @@ const DashBoardCards = () => {
             Completed Pay-outs
           </h1>
           <p className="text-[19.01px] leading-[28.93px] font-semibold ">
-            N 500,000
+            ₦500,000
           </p>
         </div>
         <div className="bg-[#264697] p-2 rounded-full">

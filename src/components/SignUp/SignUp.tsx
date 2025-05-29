@@ -103,7 +103,7 @@ function SignUp() {
             </div>
 
             <button
-              onClick={() => navigate("/otp")}
+              onClick={() => navigate("/login")}
               className="cursor-pointer w-[300px] h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]"
             >
               Sign Up
