@@ -1,30 +1,30 @@
-import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 
-interface logInState {
+interface logInData {
   email: string;
   password: string;
 }
 
-function Login() {
-  const [loginFormData, setLoginFormData] = useState<logInState>({
-    email: "",
-    password: "",
+function Login({ email, password }: Partial<logInData>) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<logInData>({
+    defaultValues: {
+      email,
+      password,
+    },
   });
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginFormData((prevData) => ({ ...prevData, [name]: value }));
-    console.log(name);
-    console.log(value);
-  };
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(loginFormData);
-    //LOGIN API lOGIC GOES HERE
-    // navigate("/app");
+  const onSubmit: SubmitHandler<logInData> = (data) => {
+    console.log(data);
+    navigate("/dashboard");
   };
 
   return (
@@ -42,30 +42,53 @@ function Login() {
           <span className="font-bold">ArkPay</span> welcome's you back
         </p>
         <div className="flex flex-col">
-          <form action="" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
               <input
-                className="active:bg-transparent w-[350px] placeholder:semi-bold placeholder:text-[15px] pl-2 h-[50px] bg-transparent  border-2 border-[#020267] rounded-md font-normal text-[16px]
-                  "
-                placeholder="Email"
+                id="email"
                 type="email"
-                onChange={handleChange}
-                value={loginFormData.email}
-                name="email"
+                placeholder="Enter your email address"
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                  errors.password ? "border-red-500" : "border-[#020267]"
+                } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
+                {...register("email", {
+                  required: "Email is required!",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
               />
+              {errors?.email && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors?.email.message}
+                </p>
+              )}
             </div>
             <div className="mb-5 flex flex-col">
               <input
-                className="w-[350px] placeholder:semi-bold placeholder:text-[15px] pl-2 h-[50px] bg-transparent  border-2 border-[#020267] rounded-md font-normal text-[16px]
-                  "
-                placeholder="Password"
                 type="password"
-                onChange={handleChange}
-                value={loginFormData.password}
-                name="password"
+                placeholder="Enter a password"
+                id="password"
+                className={`w-full max-w-[433px] px-4 py-3 border-2 ${
+                  errors.password ? "border-red-500" : "border-[#020267]"
+                } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
+                {...register("password", {
+                  required: "Password is required!",
+                  pattern: {
+                    value: passwordRegex,
+                    message: "Password is required!",
+                  },
+                })}
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1 w-[350px]">
+                  {errors.password.message}
+                </p>
+              )}
               <button
-                onClick={() => navigate("/verifyemail")}
+                onClick={() => navigate("/resetpassword")}
+                type="button"
                 className="text-right mt-2 underline font-normal text-[#020267] leading-[20.72px] text-[13px] cursor-pointer"
               >
                 Forgot Password? Reset
@@ -73,12 +96,22 @@ function Login() {
             </div>
 
             <button
-              onClick={() => navigate("/dashboard")}
+              type="submit"
               className="w-[350px] h-[50px] text-[#fff] rounded-md font-normal text-[16px] bg-[#020267] cursor-pointer"
             >
               Sign In
             </button>
           </form>
+
+          <div className="mt-[30px] text-center">
+            <button
+              className="text-[14px] text-[#969696] text-center leading-[100%] cursor-pointer"
+              onClick={() => navigate("/signup")}
+            >
+              Don’t have an account?{" "}
+              <span className="text-[#020267]">Sign up</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

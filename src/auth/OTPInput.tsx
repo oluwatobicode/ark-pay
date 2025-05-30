@@ -1,14 +1,15 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router";
 import Modal from "../ui/Modal";
 import { FaCheck } from "react-icons/fa6";
 
 type InputProps = {
   length?: number;
-  onComplete: (pin: string) => void;
+  onComplete?: (pin: string) => void;
+  setCurrForm?: Dispatch<SetStateAction<number>>;
 };
 
-function OTPInput({ length = 4, onComplete }: InputProps) {
+function OTPInput({ length = 4, onComplete, setCurrForm }: InputProps) {
   const inputRef = useRef<HTMLInputElement[]>(Array(length).fill(null));
   const [OTP, setOTP] = useState<string[]>(Array(length).fill(null));
   const navigate = useNavigate();
@@ -98,7 +99,7 @@ function OTPInput({ length = 4, onComplete }: InputProps) {
               </p>
               <button
                 className="w-[317px] h-[54.63px] bg-[#020267] text-[#fff] rounded-[28.12px] cursor-pointer mt-10"
-                onClick={() => navigate("/resetpassword")}
+                onClick={() => setCurrForm(3)}
               >
                 Reset Password
               </button>

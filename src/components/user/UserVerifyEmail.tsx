@@ -1,13 +1,20 @@
 import { useNavigate } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import type { SetStateAction, Dispatch } from "react";
 
 interface UserResetData {
   email: string;
 }
 
-const UserReset = ({
+interface UserVerifyEmailProps {
+  email?: string;
+  setCurrForm: Dispatch<SetStateAction<number>>;
+}
+
+const UserVerifyEmail = ({
   email = "noabiliaminfirst@gmail.com",
-}: Partial<UserResetData>) => {
+  setCurrForm,
+}: UserVerifyEmailProps) => {
   const {
     register,
     handleSubmit,
@@ -20,7 +27,7 @@ const UserReset = ({
 
   const onSubmit: SubmitHandler<UserResetData> = (data) => {
     console.log(data);
-    navigate("/otp");
+    setCurrForm(2);
     // the password reset logic will go here treasure!
   };
 
@@ -83,4 +90,4 @@ const UserReset = ({
   );
 };
 
-export default UserReset;
+export default UserVerifyEmail;

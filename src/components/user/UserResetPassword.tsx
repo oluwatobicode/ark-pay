@@ -1,14 +1,23 @@
+import type { Dispatch, SetStateAction } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 interface ResetPasswordData {
   Password: string;
   confirmPassword: string;
 }
 
+interface ResetPasswordProps {
+  Password?: string;
+  confirmPassword?: string;
+  setCurrForm: Dispatch<SetStateAction<number>>;
+}
+
 const UserResetPassword = ({
-  Password = "",
-  confirmPassword = "",
-}: Partial<ResetPasswordData>) => {
+  Password = "Treasure@1234",
+  confirmPassword = "Treasure@1234",
+  setCurrForm,
+}: ResetPasswordProps) => {
   const {
     register,
     handleSubmit,
@@ -24,8 +33,13 @@ const UserResetPassword = ({
   // Watch the password field to compare with confirm password
   const password = watch("Password");
 
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<ResetPasswordData> = (data) => {
     console.log(data);
+    setCurrForm(1);
+    navigate("/login");
+
     // Handle form submission here
   };
 
