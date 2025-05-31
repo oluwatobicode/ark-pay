@@ -1,24 +1,15 @@
-import type { Dispatch, SetStateAction } from "react";
 import OTPInput from "../auth/OTPInput";
+import { useResetPassword } from "../contexts/ResetPasswordProvider";
 
-interface VerifyOtpProps {
-  setCurrForm?: Dispatch<SetStateAction<number>>;
-}
+function VerifyOtp() {
+  const { setOtp, isLoading } = useResetPassword();
 
-function VerifyOtp({ setCurrForm }: VerifyOtpProps) {
-  const handleSubmit = (pin: string) => {
-    console.log(pin);
-
-    //LOGIC GOES HERE FOR THE APP
+  const handleComplete = (pin: string) => {
+    setOtp(pin);
   };
+
   return (
-    <div>
-      <OTPInput
-        length={4}
-        setCurrForm={setCurrForm}
-        onComplete={handleSubmit}
-      />
-    </div>
+    <OTPInput length={6} onComplete={handleComplete} disabled={isLoading} />
   );
 }
 

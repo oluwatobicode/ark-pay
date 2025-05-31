@@ -1,17 +1,18 @@
-import { useState } from "react";
 import UserVerifyEmail from "../components/user/UserVerifyEmail";
 import UserResetPassword from "../components/user/UserResetPassword";
 import VerifyOtp from "./VerifyOtp";
+import { useResetPassword } from "../contexts/ResetPasswordProvider";
 
 const ResetPassword = () => {
-  const [currForm, setCurrForm] = useState<number>(1);
-  switch (currForm) {
+  const { currentStep } = useResetPassword();
+
+  switch (currentStep) {
     case 1:
-      return <UserVerifyEmail setCurrForm={setCurrForm} />;
+      return <UserVerifyEmail />;
     case 2:
-      return <VerifyOtp setCurrForm={setCurrForm} />;
+      return <VerifyOtp />;
     case 3:
-      return <UserResetPassword setCurrForm={setCurrForm} />;
+      return <UserResetPassword />;
   }
 };
 

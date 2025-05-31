@@ -107,7 +107,7 @@ const Sidebar = () => {
 
                     <button
                       className="w-[317px] h-[54.63px] border-2 border-[#020267] text-[#020267] rounded-[6.79px] cursor-pointer"
-                      onClick={() => navigate("/login")}
+                      onClick={handleLogout}
                     >
                       Yes, log me out
                     </button>

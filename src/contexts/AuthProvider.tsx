@@ -41,6 +41,7 @@ interface AuthContextType {
   signup: (signUpData: SignUpData) => Promise<void>;
   logout: () => void;
   clearError: () => void;
+  checkAuthStatus: () => Promise<void>;
 }
 
 const initialState: AuthState = {
@@ -123,6 +124,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(loginData),
         }
       );
@@ -134,21 +136,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const data = await response.json();
       console.log(data);
 
-      if (data?.token) {
-        localStorage.setItem("authToken", data.token);
-      }
-
       dispatch({
         type: "AUTH_SUCCESS",
         payload: {
-          id: "",
-          name: "",
-          email: loginData.email,
-          country: "",
+          id: data.user?.id || "",
+          name: data.user?.name || "",
+          email: data.user?.email || loginData.email,
+          country: data.user?.country || "",
         },
       });
 
-      return data.message || "There is a bug here!";
+      return data.message || "Login successful!";
     } catch (error) {
       dispatch({
         type: "AUTH_ERROR",
@@ -172,6 +170,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           headers: {
             "content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(apiData),
         }
       );
@@ -182,10 +181,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
       const data = await response.json();
       console.log(data);
-
-      if (data.token) {
-        localStorage.setItem("authToken", data.token);
-      }
 
       dispatch({
         type: "AUTH_SUCCESS",
@@ -206,8 +201,58 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   //   logout
-  const logout = () => {
-    dispatch({ type: "LOGOUT" });
+  const logout = async () => {
+    try {
+      const response = await fetch(
+        "https://arkpay.onrender.com/v1/api/auth/signout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Log-out failed");
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      dispatch({ type: "LOGOUT" });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "LOGOUT" });
+    }
+  };
+
+  const checkAuthStatus = async () => {
+    dispatch({ type: "AUTH_START" });
+
+    try {
+      console.log("Checking auth status...");
+
+      const response = await fetch(
+        "https://arkpay.onrender.com/v1/api/settings",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      console.log(response);
+
+      if (response.ok) {
+        const userData = await response.json();
+        console.log(response);
+        console.log("User data:", userData);
+        dispatch({ type: "AUTH_SUCCESS", payload: userData.user });
+        console.log("User is authenticated");
+      } else {
+        dispatch({ type: "LOGOUT" });
+      }
+    } catch (error) {
+      dispatch({ type: "LOGOUT" });
+    }
   };
 
   //   for errors
@@ -221,6 +266,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     signup,
     logout,
     clearError,
+    checkAuthStatus,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

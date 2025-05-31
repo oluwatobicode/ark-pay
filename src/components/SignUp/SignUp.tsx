@@ -44,6 +44,8 @@ function SignUp({
     try {
       await signup(data);
       console.log(data);
+      toast.success("Signup successful! Kindly log-in");
+      // navigate("/login");
     } catch (error) {
       toast.error(state.error);
     }
