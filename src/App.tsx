@@ -11,10 +11,11 @@ import Documentation from "./pages/Documentation";
 import Settings from "./pages/Settings";
 import User from "./pages/User";
 import ResetPassword from "./pages/ResetPassword";
+import { AuthProvider } from "./contexts/AuthProvider";
 
 function App() {
   return (
-    <BrowserRouter>
+    <AuthProvider>
       <Toaster
         position="top-center"
         gutter={12}
@@ -35,27 +36,29 @@ function App() {
           },
         }}
       />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<UserSignUp />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<UserSignUp />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
 
-        <Route
-          element={
-            <ProtectedRoutes>
-              <AppLayout />
-            </ProtectedRoutes>
-          }
-        >
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/documentation" element={<Documentation />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route
+            element={
+              <ProtectedRoutes>
+                <AppLayout />
+              </ProtectedRoutes>
+            }
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/documentation" element={<Documentation />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

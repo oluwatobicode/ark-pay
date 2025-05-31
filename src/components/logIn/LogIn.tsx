@@ -1,5 +1,8 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/AuthProvider";
+import toast from "react-hot-toast";
+import MiniLoader from "../../ui/MiniLoader";
 
 interface logInData {
   email: string;
@@ -17,14 +20,22 @@ function Login({ email, password }: Partial<logInData>) {
       password,
     },
   });
+
+  const { state, login } = useAuth();
   const navigate = useNavigate();
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  const onSubmit: SubmitHandler<logInData> = (data) => {
-    console.log(data);
-    navigate("/dashboard");
+  const onSubmit: SubmitHandler<logInData> = async (data) => {
+    try {
+      await login(data);
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(state.error);
+      console.log(error);
+    }
   };
 
   return (
@@ -47,9 +58,12 @@ function Login({ email, password }: Partial<logInData>) {
               <input
                 id="email"
                 type="email"
+                disabled={state.isLoading}
                 placeholder="Enter your email address"
                 className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.password ? "border-red-500" : "border-[#020267]"
+                } ${
+                  state.isLoading ? "opacity-50 cursor-not-allowed" : ""
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("email", {
                   required: "Email is required!",
@@ -70,8 +84,11 @@ function Login({ email, password }: Partial<logInData>) {
                 type="password"
                 placeholder="Enter a password"
                 id="password"
-                className={`w-full max-w-[433px] px-4 py-3 border-2 ${
+                disabled={state.isLoading}
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.password ? "border-red-500" : "border-[#020267]"
+                } ${
+                  state.isLoading ? "opacity-50 cursor-not-allowed" : ""
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("password", {
                   required: "Password is required!",
@@ -97,9 +114,14 @@ function Login({ email, password }: Partial<logInData>) {
 
             <button
               type="submit"
-              className="w-[350px] h-[50px] text-[#fff] rounded-md font-normal text-[16px] bg-[#020267] cursor-pointer"
+              disabled={state.isLoading}
+              className={`w-[350px] h-[50px] text-[#fff] rounded-md font-normal text-[16px] bg-[#020267]  ${
+                state.isLoading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
             >
-              Sign In
+              {state.isLoading ? <MiniLoader /> : "Sign In"}
             </button>
           </form>
 

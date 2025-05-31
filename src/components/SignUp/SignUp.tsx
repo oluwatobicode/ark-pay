@@ -1,5 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/AuthProvider";
+import toast from "react-hot-toast";
 
 interface signUpFormData {
   name: string;
@@ -30,17 +32,21 @@ function SignUp({
       country,
     },
   });
-  const navigate = useNavigate();
 
+  const { state, signup } = useAuth();
+  const navigate = useNavigate();
   const Password = watch("password");
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  const onSubmit: SubmitHandler<signUpFormData> = (data) => {
-    console.log(data);
-
-    //SIGN UP LOGIN GOES HERE
+  const onSubmit: SubmitHandler<signUpFormData> = async (data) => {
+    try {
+      await signup(data);
+      console.log(data);
+    } catch (error) {
+      toast.error(state.error);
+    }
   };
 
   return (

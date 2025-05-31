@@ -4,9 +4,18 @@ import { NavLink, useNavigate } from "react-router";
 import { FiSettings } from "react-icons/fi";
 import Modal from "./Modal";
 import { IoExit } from "react-icons/io5";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Sidebar = () => {
+  const { logout } = useAuth();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      logout();
+    } catch (error) {}
+    navigate("/login");
+  };
 
   return (
     <Modal>
