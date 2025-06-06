@@ -4,18 +4,51 @@ import React, {
   useReducer,
   type ReactNode,
 } from "react";
-
-// const apiUrl = process.env.REACT_API_URL;
+import axios, { AxiosError } from "axios";
 
 interface User {
-  id: string;
-  name: string;
-  email: string;
-  country: string;
+  id?: string;
+  name?: string;
+  email?: string;
+  country?: string;
+}
+
+interface Transaction {
+  _id: string;
+  orderId: string;
+  amount: number;
+  rate: number;
+  token: string;
+  network: string;
+  receiveAddress: string;
+  validUntil: string;
+  createdAt?: string;
+}
+
+interface ApiUsage {
+  dates: { [date: string]: number };
+  totalCalls: number;
+}
+
+interface UserData {
+  user: {
+    id: string;
+    email: string;
+    country: string;
+    bankName: string | null;
+    accountName: string | null;
+    bankAccountNumber: number | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    institutionCode: string | null;
+    apiUsage: ApiUsage;
+    transactions: Transaction[];
+  };
 }
 
 interface AuthState {
   user: User | null;
+  userData: UserData | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -46,6 +79,7 @@ interface AuthContextType {
 
 const initialState: AuthState = {
   user: null,
+  userData: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,
@@ -55,6 +89,7 @@ const initialState: AuthState = {
 type AuthAction =
   | { type: "AUTH_START" }
   | { type: "AUTH_SUCCESS"; payload: User }
+  | { type: "AUTH_USER_DATA"; payload: UserData }
   | { type: "AUTH_ERROR"; payload: string }
   | { type: "LOGOUT" }
   | { type: "CLEAR_ERROR" };
@@ -62,12 +97,14 @@ type AuthAction =
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case "AUTH_START":
+      return { ...state, isLoading: true, error: null };
+    case "AUTH_USER_DATA":
       return {
         ...state,
-        isLoading: true,
+        isLoading: false,
+        userData: action.payload,
         error: null,
       };
-
     case "AUTH_SUCCESS":
       return {
         ...state,
@@ -76,7 +113,6 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isLoading: false,
         error: null,
       };
-
     case "AUTH_ERROR":
       return {
         ...state,
@@ -85,7 +121,6 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isLoading: false,
         error: action.payload,
       };
-
     case "LOGOUT":
       return {
         ...state,
@@ -94,13 +129,8 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         isLoading: false,
         error: null,
       };
-
     case "CLEAR_ERROR":
-      return {
-        ...state,
-        error: null,
-      };
-
+      return { ...state, error: null };
     default:
       return state;
   }
@@ -113,149 +143,109 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  const axiosInstance = axios.create({
+    baseURL: "https://arkpay.onrender.com/v1/api",
+    withCredentials: true,
+    headers: { "Content-Type": "application/json" },
+  });
+
   const login = async (loginData: LoginData) => {
     dispatch({ type: "AUTH_START" });
-
     try {
-      const response = await fetch(
-        "https://arkpay.onrender.com/v1/api/auth/signin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(loginData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-      console.log(data);
+      const response = await axiosInstance.post("/auth/signin", loginData);
+      console.log("Login response:", response.data);
 
       dispatch({
         type: "AUTH_SUCCESS",
         payload: {
-          id: data.user?.id || "",
-          name: data.user?.name || "",
-          email: data.user?.email || loginData.email,
-          country: data.user?.country || "",
+          email: response.data.user?.email || loginData.email,
         },
       });
 
-      return data.message || "Login successful!";
+      try {
+        const userDataResponse = await axiosInstance.get("/auth/me");
+        console.log("User data response:", userDataResponse.data);
+        if (userDataResponse.data) {
+          dispatch({ type: "AUTH_USER_DATA", payload: userDataResponse.data });
+        }
+      } catch (userDataError) {
+        console.error("Failed to fetch user data after login:", userDataError);
+      }
     } catch (error) {
-      dispatch({
-        type: "AUTH_ERROR",
-        payload: error instanceof Error ? error.message : "Login failed",
-      });
+      const err = error as AxiosError<{ error?: string }>;
+      const errorMessage = err.response?.data?.error || "Login failed";
+      dispatch({ type: "AUTH_ERROR", payload: errorMessage });
       throw error;
     }
   };
 
-  //   SIGN UP FUNCTION
   const signup = async (signUpData: SignUpData) => {
     dispatch({ type: "AUTH_START" });
-
     try {
       const { confirmPassword, ...apiData } = signUpData;
-
-      const response = await fetch(
-        "https://arkpay.onrender.com/v1/api/auth/signup",
-        {
-          method: "POST",
-          headers: {
-            "content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(apiData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Signup failed");
-      }
-
-      const data = await response.json();
-      console.log(data);
-
+      const response = await axiosInstance.post("/auth/signup", apiData);
       dispatch({
         type: "AUTH_SUCCESS",
         payload: {
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          country: data.user.country,
+          id: response.data.user.id,
+          name: response.data.user.name,
+          email: response.data.user.email,
+          country: response.data.user.country,
         },
       });
     } catch (error) {
-      dispatch({
-        type: "AUTH_ERROR",
-        payload: "Signup failed",
-      });
+      const err = error as AxiosError<{ error?: string }>;
+      const errorMessage = err.response?.data?.error || "Signup failed";
+      dispatch({ type: "AUTH_ERROR", payload: errorMessage });
       throw error;
     }
   };
 
-  //   logout
   const logout = async () => {
     try {
-      const response = await fetch(
-        "https://arkpay.onrender.com/v1/api/auth/signout",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Log-out failed");
-      }
-
-      const data = await response.json();
-      console.log(data);
-
+      const response = await axiosInstance.post("/auth/signout");
+      console.log("Logout response:", response.data);
       dispatch({ type: "LOGOUT" });
     } catch (error) {
-      console.log(error);
+      console.error("Logout error:", error);
       dispatch({ type: "LOGOUT" });
     }
   };
 
   const checkAuthStatus = async () => {
+    if (state.isAuthenticated || state.isLoading) return;
     dispatch({ type: "AUTH_START" });
-
     try {
       console.log("Checking auth status...");
+      const response = await axiosInstance.get("/auth/me");
+      console.log("Auth check response:", response.status, response.data);
 
-      const response = await fetch(
-        "https://arkpay.onrender.com/v1/api/settings",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-
-      console.log(response);
-
-      if (response.ok) {
-        const userData = await response.json();
-        console.log(response);
-        console.log("User data:", userData);
-        dispatch({ type: "AUTH_SUCCESS", payload: userData.user });
-        console.log("User is authenticated");
+      if (response.data) {
+        console.log(response.data);
+        dispatch({ type: "AUTH_USER_DATA", payload: response.data });
       } else {
-        dispatch({ type: "LOGOUT" });
+        console.log("Invalid user data structure:", response.data);
       }
     } catch (error) {
-      dispatch({ type: "LOGOUT" });
+      const err = error as AxiosError<{ error?: string }>;
+      console.error(
+        "Auth check error:",
+        err.response?.status,
+        err.response?.data
+      );
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        // dispatch({ type: "LOGOUT" });
+        console.log("hi");
+      } else {
+        dispatch({
+          type: "AUTH_ERROR",
+          payload:
+            err.response?.data?.error || "Unable to verify authentication.",
+        });
+      }
     }
   };
 
-  //   for errors
   const clearError = () => {
     dispatch({ type: "CLEAR_ERROR" });
   };
@@ -274,10 +264,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-
   if (context === undefined) {
     throw new Error("It must be used within the context API");
   }
-
   return context;
 };

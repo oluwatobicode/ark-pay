@@ -70,7 +70,7 @@ function SignUp({
                 id="name"
                 type="name"
                 placeholder="Name"
-                className={`w-full max-w-[300px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.name ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("name", {
@@ -92,7 +92,7 @@ function SignUp({
                 id="email"
                 type="email"
                 placeholder="Enter your email address"
-                className={`w-full max-w-[300px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.password ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("email", {
@@ -114,7 +114,7 @@ function SignUp({
                 type="password"
                 placeholder="Enter a password"
                 id="password"
-                className={`w-full max-w-[300px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.password ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("password", {
@@ -134,7 +134,7 @@ function SignUp({
             </div>
             <div className="mb-5">
               <input
-                className={`w-full max-w-[300px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.confirmPassword ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 id="confirmPassword"
@@ -157,7 +157,7 @@ function SignUp({
                 id="country"
                 type="text"
                 placeholder="Country"
-                className={`w-full max-w-[300px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
                   errors.country ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("country", {
@@ -178,7 +178,7 @@ function SignUp({
             <button
               type="submit"
               disabled={Object.keys(errors).length > 0}
-              className="cursor-pointer w-[300px] h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]"
+              className="cursor-pointer w-[443px] h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]"
             >
               Sign Up
             </button>

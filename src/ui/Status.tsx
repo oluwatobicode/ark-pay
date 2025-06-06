@@ -5,9 +5,9 @@ interface StatusProps {
 
 const Status = ({ children, types }: StatusProps) => {
   const styles: { [key: string]: string } = {
-    Completed:
+    Active:
       "bg-[#EAECFF] w-[120px] p-[10px] rounded-[19.58px] flex flex-row items-center justify-center gap-[5px] text-[14.05px]",
-    Pending:
+    Expired:
       "bg-[#EB4E4E] w-[120px] p-[10px] rounded-[19.58px] text-white flex flex-row items-center justify-center gap-[5px] text-[14.05px]",
   };
 
@@ -15,7 +15,7 @@ const Status = ({ children, types }: StatusProps) => {
     <div className={styles[types]}>
       <div
         className={
-          types === "Pending"
+          types === "Expired"
             ? "w-[15px] h-[15px] rounded-full bg-[#990f02]"
             : "w-[15px] h-[15px] rounded-full bg-[#4D14DF]"
         }

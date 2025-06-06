@@ -1,30 +1,36 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useAuth } from "../../contexts/AuthProvider";
+import { useEffect } from "react";
 
 interface UserFormData {
   FirstName: string;
   LastName: string;
   Email: string;
   Country: string;
-  UserId: number;
+  UserId: number | string;
   BankName: string;
-  AccountNumber: number;
+  AccountNumber: number | string;
   AccountName: string;
 }
 
 const UserForm = ({
-  FirstName = "Noah",
-  LastName = "Billamin",
-  Email = "noabiliaminfirst@gmail.com",
-  Country = "Canada",
-  UserId = 234148685,
-  BankName = "Kuda",
-  AccountName = "Noah Billamin",
-  AccountNumber = 2068001238,
+  FirstName = "",
+  LastName = "",
+  Email = "",
+  Country = "",
+  UserId = "",
+  BankName = "",
+  AccountName = "",
+  AccountNumber = "",
 }: Partial<UserFormData>) => {
+  const { state } = useAuth();
+  const userData = state.userData?.user;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<UserFormData>({
     defaultValues: {
       FirstName,
@@ -38,8 +44,26 @@ const UserForm = ({
     },
   });
 
+  useEffect(() => {
+    console.log("useEffect triggered, userData:", userData);
+    if (userData) {
+      reset({
+        FirstName: "",
+        LastName: "",
+        Email: userData.email || "",
+        Country: userData.country || "",
+        UserId: userData.id || "",
+        BankName: userData.bankName || "",
+        AccountName: userData.accountName || "",
+        AccountNumber: userData.bankAccountNumber?.toString() || "",
+      });
+    } else {
+      console.log("userData is null/undefined");
+    }
+  }, [userData, reset]);
+
   const onSubmit: SubmitHandler<UserFormData> = (data) => {
-    console.log(data);
+    console.log("Form submitted:", data);
   };
 
   return (
@@ -166,7 +190,7 @@ const UserForm = ({
               User Id
             </label>
             <input
-              id="User Id"
+              id="UserId"
               type="text"
               placeholder="Enter your User Id"
               className="w-[450.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

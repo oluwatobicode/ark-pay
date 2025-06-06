@@ -8,69 +8,34 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useAuth } from "../../contexts/AuthProvider";
 
 // Define the interface for your data structure
 interface ChartData {
-  name: string;
-  uv: number;
-  pv: number;
-  amt: number;
+  apiDate?: string;
+  apiCalls?: number;
 }
-
-const data: ChartData[] = [
-  {
-    name: "Monday",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Tuesday",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Wednesday",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Thursday",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Friday",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Saturday",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Sunday",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
 
 // Convert to functional component with TypeScript
 const AreaChartExample: React.FC = () => {
+  const { state } = useAuth();
+  const { apiUsage } = state.userData?.user || {};
+
+  const chartData: ChartData[] = apiUsage?.dates
+    ? Object.entries(apiUsage.dates).map(([date, count]) => ({
+        apiDate: date, // e.g., "2025-04-24"
+        apiCalls: count, // API call count for that date
+      }))
+    : [];
+
+  console.log("Chart Data:", chartData);
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}
           height={400}
-          data={data}
+          data={chartData}
           margin={{
             top: 10,
             right: 30,
@@ -79,10 +44,15 @@ const AreaChartExample: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="apiDate" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="uv" stroke="#020267" fill="#8884d8" />
+          <Area
+            type="monotone"
+            dataKey="apiCalls"
+            stroke="#020267"
+            fill="#8884d8"
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

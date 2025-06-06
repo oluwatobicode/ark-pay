@@ -1,9 +1,27 @@
 import { useNavigate } from "react-router";
 import Modal from "../../ui/Modal";
 import { FaCheck } from "react-icons/fa6";
+import {
+  useUserData,
+  type UserDataProvider,
+} from "../../contexts/UserDataProvider";
+import toast from "react-hot-toast";
 
 const ApiUsage = () => {
   const navigate = useNavigate();
+  const { state, resetApiKey } = useUserData();
+
+  const sendResetApiKey = async () => {
+    try {
+      await resetApiKey();
+      console.log(state.apiKey);
+      toast.success("Api key sent check your mail");
+    } catch (error) {
+      toast.error("There is an error");
+      console.log(state.error);
+      toast.error(state.error);
+    }
+  };
 
   return (
     <Modal>
@@ -14,8 +32,20 @@ const ApiUsage = () => {
           </h1>
         </div>
 
-        <Modal.Open opens="open">
-          <button className="bg-[#020267] text-[#fff] w-full h-[51px] rounded-[6px] cursor-pointer">
+        <button
+          onClick={sendResetApiKey}
+          className="bg-[#020267] text-[#fff] w-full h-[51px] rounded-[6px] cursor-pointer"
+        >
+          <p className="text-left px-3 py-4 text-[16px] leading-[100%] font-semibold">
+            Generate New API key
+          </p>
+        </button>
+
+        {/* <Modal.Open opens="open">
+          <button
+            onClick={() => sendResetApiKey}
+            className="bg-[#020267] text-[#fff] w-full h-[51px] rounded-[6px] cursor-pointer"
+          >
             <p className="text-left px-3 py-4 text-[16px] leading-[100%] font-semibold">
               Generate New API key
             </p>
@@ -40,7 +70,7 @@ const ApiUsage = () => {
               Return to dashboard
             </button>
           </div>
-        </Modal.Window>
+        </Modal.Window> */}
       </div>
     </Modal>
   );
