@@ -48,8 +48,8 @@ const UserForm = ({
     console.log("useEffect triggered, userData:", userData);
     if (userData) {
       reset({
-        FirstName: "",
-        LastName: "",
+        FirstName: userData.firstName || "",
+        LastName: userData.lastName || "",
         Email: userData.email || "",
         Country: userData.country || "",
         UserId: userData.id || "",

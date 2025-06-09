@@ -4,7 +4,8 @@ import { useAuth } from "../../contexts/AuthProvider";
 import toast from "react-hot-toast";
 
 interface signUpFormData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -12,7 +13,8 @@ interface signUpFormData {
 }
 
 function SignUp({
-  name = "",
+  firstName = "",
+  lastName = "",
   email = "",
   password = "",
   confirmPassword = "",
@@ -25,7 +27,8 @@ function SignUp({
     formState: { errors },
   } = useForm<signUpFormData>({
     defaultValues: {
-      name,
+      firstName,
+      lastName,
       email,
       password,
       confirmPassword,
@@ -45,7 +48,7 @@ function SignUp({
       await signup(data);
       console.log(data);
       toast.success("Signup successful! Kindly log-in");
-      // navigate("/login");
+      navigate("/login");
     } catch (error) {
       toast.error(state.error);
     }
@@ -67,13 +70,13 @@ function SignUp({
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
               <input
-                id="name"
-                type="name"
-                placeholder="Name"
+                id="firstName"
+                type="firstName"
+                placeholder="First name"
                 className={`w-full max-w-[443px] px-4 py-3 border-2 ${
-                  errors.name ? "border-red-500" : "border-[#020267]"
+                  errors.firstName ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
-                {...register("name", {
+                {...register("firstName", {
                   required: "Name is required!",
                   minLength: {
                     value: 2,
@@ -81,9 +84,31 @@ function SignUp({
                   },
                 })}
               />
-              {errors.name && (
+              {errors.firstName && (
                 <p className="mt-1 text-sm text-red-600">
-                  {errors.name.message}
+                  {errors.firstName.message}
+                </p>
+              )}
+            </div>
+            <div className="mb-5">
+              <input
+                id="lastName"
+                type="lastName"
+                placeholder="Last Name"
+                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                  errors.lastName ? "border-red-500" : "border-[#020267]"
+                } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
+                {...register("lastName", {
+                  required: "your last name is required!",
+                  minLength: {
+                    value: 2,
+                    message: "Enter a last name",
+                  },
+                })}
+              />
+              {errors.lastName && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.lastName.message}
                 </p>
               )}
             </div>

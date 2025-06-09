@@ -29,6 +29,7 @@ interface UserDataState {
   apiKey: string | null;
   isLoading: boolean;
   error: string | null;
+  payoutCurrency: string | null;
 }
 interface UpdateCurrencyData {
   payoutCurrency: string;
@@ -56,6 +57,7 @@ interface UserDataContextType {
 }
 
 type UserDataAction =
+  | { type: "SET_PAYOUT_CURRENCY"; payLoad: string }
   | { type: "SET_LOADING"; payLoad: boolean }
   | { type: "SET_METRICS"; payLoad: Metrics }
   | { type: "SET_API_KEY"; payLoad: string }
@@ -70,6 +72,7 @@ const initialState: UserDataState = {
   apiKey: null,
   isLoading: false,
   error: null,
+  payoutCurrency: null,
 };
 
 const userDataReducer = (
@@ -119,6 +122,13 @@ const userDataReducer = (
       return {
         ...state,
         error: null,
+      };
+
+    case "SET_PAYOUT_CURRENCY":
+      return {
+        ...state,
+        isLoading: false,
+        payoutCurrency: action.payLoad,
       };
 
     case "UPDATE_USER_SUCCESS":
@@ -207,6 +217,29 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
         err.response?.data?.error ||
         err.message ||
         "Failed to generate API key";
+      dispatch({ type: "SET_ERROR", payLoad: errorMessage });
+      throw error;
+    }
+  };
+
+  const updatePayout = async () => {
+    dispatch({ type: "SET_LOADING", payLoad: true });
+    try {
+      const response = await axiosInstance.get("/");
+
+      if (response.data) {
+        console.log(response);
+        dispatch({ type: "", payLoad: response.data });
+      } else {
+        throw new Error("There is an error");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ error?: string }>;
+      console.log("error over here!");
+      const errorMessage =
+        err.response?.data.error ||
+        err.message ||
+        "Failed to update the currency!";
       dispatch({ type: "SET_ERROR", payLoad: errorMessage });
       throw error;
     }

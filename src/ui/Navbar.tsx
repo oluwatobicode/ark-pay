@@ -1,7 +1,11 @@
 import { BiBell, BiSearch } from "react-icons/bi";
 import { NavLink } from "react-router";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Navbar = () => {
+  const { state } = useAuth();
+  const user = state?.userData;
+
   return (
     <div className="px-[2.5rem] py-[1rem] w-full bg-white shadow-sm">
       <nav className="flex flex-row items-center justify-between ">
@@ -32,7 +36,8 @@ const Navbar = () => {
             <div className="w-[30px] h-[30px] rounded-full bg-[#D9D9D9]"></div>
             <div className="">
               <h1 className="text-[13px] leading-[20.47px] font-semibold">
-                Noah Billamin
+                {`${user?.user.firstName} ${user?.user.lastName}` ||
+                  "User Name"}
               </h1>
               <p className="text-[12px]">Administrator</p>
             </div>

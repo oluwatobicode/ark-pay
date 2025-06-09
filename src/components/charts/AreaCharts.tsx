@@ -23,8 +23,8 @@ const AreaChartExample: React.FC = () => {
 
   const chartData: ChartData[] = apiUsage?.dates
     ? Object.entries(apiUsage.dates).map(([date, count]) => ({
-        apiDate: date, // e.g., "2025-04-24"
-        apiCalls: count, // API call count for that date
+        apiDate: date,
+        apiCalls: count,
       }))
     : [];
 
