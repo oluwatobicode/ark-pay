@@ -1,15 +1,17 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useUserData } from "../../contexts/UserDataProvider";
+import toast from "react-hot-toast";
 
 interface UserFormData {
   FirstName: string;
   LastName: string;
   Email: string;
   Country: string;
-  UserId: number | string;
+  UserId: string;
   BankName: string;
-  AccountNumber: number | string;
+  AccountNumber: string;
   AccountName: string;
 }
 
@@ -24,13 +26,18 @@ const UserForm = ({
   AccountNumber = "",
 }: Partial<UserFormData>) => {
   const { state } = useAuth();
+  const { updateUser } = useUserData();
   const userData = state.userData?.user;
+
+  const [hasChanges, setHasChanges] = useState(false);
+  const [originalData, setOriginalData] = useState<Partial<UserFormData>>({});
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<UserFormData>({
     defaultValues: {
       FirstName,
@@ -44,26 +51,79 @@ const UserForm = ({
     },
   });
 
+  const watchedFields = watch();
+
   useEffect(() => {
     console.log("useEffect triggered, userData:", userData);
     if (userData) {
-      reset({
+      const formData = {
         FirstName: userData.firstName || "",
         LastName: userData.lastName || "",
         Email: userData.email || "",
         Country: userData.country || "",
-        UserId: userData.id || "",
+        UserId: userData.id?.toString() || "",
         BankName: userData.bankName || "",
         AccountName: userData.accountName || "",
         AccountNumber: userData.bankAccountNumber?.toString() || "",
-      });
+      };
+
+      reset(formData);
+      setOriginalData(formData); // Set original data when form is reset
     } else {
       console.log("userData is null/undefined");
     }
   }, [userData, reset]);
 
-  const onSubmit: SubmitHandler<UserFormData> = (data) => {
-    console.log("Form submitted:", data);
+  useEffect(() => {
+    // Only check for changes if originalData has been set
+    if (Object.keys(originalData).length > 0) {
+      const hasFormChanges = Object.keys(watchedFields).some(
+        (key) =>
+          watchedFields[key as keyof UserFormData] !==
+          originalData[key as keyof UserFormData]
+      );
+      setHasChanges(hasFormChanges);
+      console.log("Has changes:", hasFormChanges); // Debug log
+    }
+  }, [watchedFields, originalData]);
+
+  const onSubmit: SubmitHandler<UserFormData> = async (data) => {
+    console.log("Form submitted with data:", data);
+    console.log("Original data:", originalData);
+    console.log("Has changes:", hasChanges);
+
+    if (hasChanges) {
+      // Only send changed fields
+      const changedFields = Object.keys(data).reduce((changes, key) => {
+        const fieldKey = key as keyof UserFormData;
+        if (data[fieldKey] !== originalData[fieldKey]) {
+          changes[fieldKey] = data[fieldKey];
+        }
+        return changes;
+      }, {} as Partial<UserFormData>);
+
+      console.log("Changed fields:", changedFields);
+
+      try {
+        // Here you would typically call an API to update the user data
+        await updateUser(changedFields);
+
+        // Simulate API call
+        // toast.loading("Updating user data...");
+
+        // After successful update, reset the original data
+        setOriginalData(data);
+        setHasChanges(false);
+
+        toast.success("User data updated successfully!"); // Temporary feedback
+      } catch (error) {
+        console.error("Error updating user data:", error);
+        toast.error("Error updating user data");
+      }
+    } else {
+      console.log("No changes detected");
+      alert("No changes to save");
+    }
   };
 
   return (
@@ -196,10 +256,6 @@ const UserForm = ({
               className="w-[450.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("UserId", {
                 required: "User Id is required!",
-                min: {
-                  value: 1,
-                  message: "User ID must be greater than 0",
-                },
               })}
             />
             {errors?.UserId && (
@@ -250,10 +306,6 @@ const UserForm = ({
               className="w-[450.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("AccountNumber", {
                 required: "Account number is required!",
-                min: {
-                  value: 1,
-                  message: "Account number must be valid",
-                },
               })}
             />
             {errors?.AccountNumber && (
@@ -289,9 +341,14 @@ const UserForm = ({
           <div className="ml-auto">
             <button
               type="submit"
-              className="bg-[#020267] cursor-pointer text-white py-2 px-10 rounded-[4px] hover:bg-[#020267] focus:outline-none focus:ring-2 focus:ring-[#020267] focus:ring-offset-2 transition duration-200"
+              disabled={!hasChanges}
+              className={`py-2 px-10 rounded-[4px] focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-200 ${
+                hasChanges
+                  ? "bg-[#020267] hover:bg-[#020267] text-white cursor-pointer focus:ring-[#020267]"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
-              Edit
+              {hasChanges ? "Save Changes" : "No Changes"}
             </button>
           </div>
         </div>

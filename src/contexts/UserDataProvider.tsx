@@ -30,20 +30,22 @@ interface UserDataState {
   isLoading: boolean;
   error: string | null;
   payoutCurrency: string | null;
+  updatedUserData: UpdateUserData | null;
 }
+
 interface UpdateCurrencyData {
   payoutCurrency: string;
 }
 
 interface UpdateUserData {
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
-  country: string | null;
-  bankName: string | null;
-  accountName: string | null;
-  bankAccountNumber: string | null;
-  institutionCode: string | null;
+  FirstName?: string;
+  LastName?: string;
+  Email?: string;
+  Country?: string;
+  BankName?: string;
+  AccountName?: string;
+  AccountNumber?: string;
+  UserId?: string;
 }
 
 interface UserDataContextType {
@@ -52,13 +54,14 @@ interface UserDataContextType {
   getRecentTransactions: () => Promise<void>;
   updatePayout: (data: UpdateCurrencyData) => Promise<void>;
   resetApiKey: () => Promise<void>;
-  updateUser: (data: UpdateUserData) => Promise<void>;
+  updateUser: (data: Partial<UpdateUserData>) => Promise<void>;
   clearError: () => void;
 }
 
 type UserDataAction =
   | { type: "SET_PAYOUT_CURRENCY"; payLoad: string }
   | { type: "SET_LOADING"; payLoad: boolean }
+  | { type: "SET_UPDATED_USER"; payLoad: UpdateUserData }
   | { type: "SET_METRICS"; payLoad: Metrics }
   | { type: "SET_API_KEY"; payLoad: string }
   | { type: "SET_TRANSACTIONS"; payLoad: TransactionsResponse }
@@ -72,6 +75,7 @@ const initialState: UserDataState = {
   apiKey: null,
   isLoading: false,
   error: null,
+  updatedUserData: null,
   payoutCurrency: null,
 };
 
@@ -107,6 +111,14 @@ const userDataReducer = (
       return {
         ...state,
         apiKey: action.payLoad,
+        isLoading: false,
+        error: null,
+      };
+
+    case "SET_UPDATED_USER":
+      return {
+        ...state,
+        updatedUserData: action.payLoad,
         isLoading: false,
         error: null,
       };
@@ -222,14 +234,14 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const updatePayout = async () => {
+  const updatePayout = async (data: UpdateCurrencyData) => {
     dispatch({ type: "SET_LOADING", payLoad: true });
     try {
-      const response = await axiosInstance.get("/");
+      const response = await axiosInstance.post("/payout/update", data);
 
       if (response.data) {
         console.log(response);
-        dispatch({ type: "", payLoad: response.data });
+        dispatch({ type: "SET_PAYOUT_CURRENCY", payLoad: data.payoutCurrency });
       } else {
         throw new Error("There is an error");
       }
@@ -237,10 +249,60 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
       const err = error as AxiosError<{ error?: string }>;
       console.log("error over here!");
       const errorMessage =
-        err.response?.data.error ||
+        err.response?.data?.error ||
         err.message ||
         "Failed to update the currency!";
       dispatch({ type: "SET_ERROR", payLoad: errorMessage });
+      throw error;
+    }
+  };
+
+  const updateUser = async (userData: Partial<UpdateUserData>) => {
+    dispatch({ type: "SET_LOADING", payLoad: true });
+
+    try {
+      // Field mapping from form fields to API fields
+      const fieldMapping: Record<keyof UpdateUserData, string> = {
+        FirstName: "firstName",
+        LastName: "lastName",
+        Email: "email",
+        Country: "country",
+        BankName: "bankName",
+        AccountName: "accountName",
+        AccountNumber: "bankAccountNumber",
+        UserId: "userId", // Add this if needed by your API
+      };
+
+      // Only include fields that have values (not undefined)
+      const apiData: Record<string, any> = {};
+
+      Object.entries(userData).forEach(([key, value]) => {
+        if (value !== undefined) {
+          const apiFieldName = fieldMapping[key as keyof UpdateUserData];
+          if (apiFieldName) {
+            apiData[apiFieldName] = value;
+          }
+        }
+      });
+
+      console.log("Sending user data to API:", apiData);
+
+      const response = await axiosInstance.post("/user/update-user", apiData);
+
+      if (response.data) {
+        console.log("User updated successfully:", response.data);
+        dispatch({ type: "UPDATE_USER_SUCCESS" });
+      } else {
+        throw new Error("There was an error updating your profile!");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ error?: string }>;
+      console.error("Update user error:", err);
+      const errMessage =
+        err.response?.data?.error ||
+        err.message ||
+        "Failed to update your profile!";
+      dispatch({ type: "SET_ERROR", payLoad: errMessage });
       throw error;
     }
   };
@@ -253,8 +315,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
     state,
     getMetrics,
     getRecentTransactions,
-    // updatePayout,
-    // updateUser,
+    updatePayout,
+    updateUser,
     resetApiKey,
     clearError,
   };
