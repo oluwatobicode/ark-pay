@@ -143,7 +143,7 @@ const UserForm = ({
               id="FirstName"
               type="text"
               placeholder="Enter your first name"
-              className="w-[400.5px] px-3 py-2 border border-gray-300 rounded-[6px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-[350px] px-3 py-2 border border-gray-300 rounded-[6px] focus:outline-none focus:ring-2 focus:ring-blue-500"
               {...register("FirstName", {
                 required: "First name is required",
                 minLength: {
@@ -170,7 +170,7 @@ const UserForm = ({
               id="LastName"
               type="text"
               placeholder="Enter your last name"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("LastName", {
                 required: "Last name is required!",
                 minLength: {
@@ -196,7 +196,7 @@ const UserForm = ({
             <input
               type="email"
               placeholder="Enter your email address"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               id="Email"
               {...register("Email", {
                 required: "Email is required!",
@@ -224,7 +224,7 @@ const UserForm = ({
               id="Country"
               type="text"
               placeholder="Country"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("Country", {
                 required: "Country is required!",
                 minLength: {
@@ -251,7 +251,7 @@ const UserForm = ({
               id="UserId"
               type="text"
               placeholder="Enter your User Id"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("UserId", {
                 required: "User Id is required!",
               })}
@@ -274,7 +274,7 @@ const UserForm = ({
               id="BankName"
               type="text"
               placeholder="Enter bank name"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("BankName", {
                 required: "Bank name is required!",
                 minLength: {
@@ -301,7 +301,7 @@ const UserForm = ({
               id="AccountNumber"
               type="text"
               placeholder="Enter bank account"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("AccountNumber", {
                 required: "Account number is required!",
               })}
@@ -324,7 +324,7 @@ const UserForm = ({
               id="AccountName"
               type="text"
               placeholder="Enter account name"
-              className="w-[400.5px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-[350px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("AccountName", {
                 required: "Account name is required!",
               })}
@@ -346,7 +346,7 @@ const UserForm = ({
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
-              {hasChanges ? "Save Changes" : "No Changes"}
+              {hasChanges ? "Save Changes" : "Edit"}
             </button>
           </div>
         </div>

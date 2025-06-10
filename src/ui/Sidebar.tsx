@@ -1,10 +1,10 @@
+import Modal from "./Modal";
 import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthProvider";
 import { IoExit } from "react-icons/io5";
 import { FiSettings } from "react-icons/fi";
 import { GrTransaction } from "react-icons/gr";
 import { BiCategory, BiLogOut, BiWalletAlt } from "react-icons/bi";
-import Modal from "./Modal";
 
 const Sidebar = () => {
   const { logout } = useAuth();
