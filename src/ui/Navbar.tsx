@@ -7,44 +7,52 @@ const Navbar = () => {
   const user = state?.userData;
 
   return (
-    <div className="px-[2.5rem] py-[1rem] w-full bg-white shadow-sm">
-      <nav className="flex flex-row items-center justify-between ">
-        <h1 className="text-[20px] font-bold leading-[45px]">Dashboard</h1>
+    <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-4">
+      <nav className="flex items-center justify-between">
+        <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
 
-        <div className="relative">
+        {/* Search - Hidden on mobile, visible on larger screens */}
+        <div className="hidden md:block relative">
           <BiSearch
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
           />
           <input
             type="text"
-            name=""
             placeholder="Search by ID, product, or others..."
-            id=""
-            className="w-[352.38px] text-[12.53px] pl-10 pr-3 py-2 border border-gray-300 rounded-[6px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
-        <div className="flex gap-[25px] items-center justify-end">
-          <button className="flex items-center justify-center bg-[#F7F8F7] p-2 rounded-[11.64px]">
-            <BiBell size="20" color="#382BB8" />
+        <div className="flex items-center gap-4">
+          {/* Mobile search button */}
+          <button className="md:hidden p-2 text-gray-400 hover:text-gray-600">
+            <BiSearch size={20} />
           </button>
+
+          {/* Notification */}
+          <button className="p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <BiBell size={20} className="text-blue-900" />
+          </button>
+
+          {/* User Profile */}
           <NavLink
             to="/user"
-            className="bg-[#F7F8F7] px-3 py-1 rounded-[11.64px] flex items-center gap-[15px]"
+            className="flex items-center gap-3 bg-gray-50 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            <div className="w-[30px] h-[30px] rounded-full bg-[#D9D9D9]"></div>
-            <div className="">
-              <h1 className="text-[13px] leading-[20.47px] font-semibold">
-                {`${user?.user.firstName} ${user?.user.lastName}` ||
+            <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0"></div>
+            <div className="hidden sm:block text-left">
+              <h3 className="text-sm font-semibold text-gray-900">
+                {`${user?.user?.firstName} ${user?.user?.lastName}` ||
                   "User Name"}
-              </h1>
-              <p className="text-[12px]">Administrator</p>
+              </h3>
+              <p className="text-xs text-gray-500">Administrator</p>
             </div>
           </NavLink>
         </div>
       </nav>
-    </div>
+    </header>
   );
 };
+
 export default Navbar;

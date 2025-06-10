@@ -109,8 +109,6 @@ const UserForm = ({
         await updateUser(changedFields);
 
         // Simulate API call
-        // toast.loading("Updating user data...");
-
         // After successful update, reset the original data
         setOriginalData(data);
         setHasChanges(false);

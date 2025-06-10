@@ -12,14 +12,16 @@ const AppLayout = () => {
   }, []);
 
   return (
-    <section className="grid grid-cols-[19.1rem_1fr] grid-rows-[auto_1fr] h-screen">
+    <section className="grid grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] grid-rows-[auto_1fr] h-screen overflow-hidden">
       <Sidebar />
-      <Navbar />
-      <main className="pb-24 overflow-y-auto">
-        <div className="max-w-[120rem] mx-auto flex flex-col gap-8">
-          <Outlet />
-        </div>
-      </main>
+      <div className="flex flex-col overflow-hidden">
+        <Navbar />
+        <main className="flex-1 overflow-y-auto bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </section>
   );
 };

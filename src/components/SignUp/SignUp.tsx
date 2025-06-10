@@ -2,6 +2,8 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthProvider";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 interface signUpFormData {
   firstName: string;
@@ -39,6 +41,12 @@ function SignUp({
   const { state, signup } = useAuth();
   const navigate = useNavigate();
   const Password = watch("password");
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -135,22 +143,36 @@ function SignUp({
               )}
             </div>
             <div className="mb-5">
-              <input
-                type="password"
-                placeholder="Enter a password"
-                id="password"
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
-                  errors.password ? "border-red-500" : "border-[#020267]"
-                } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
-                {...register("password", {
-                  required: "Password is required!",
-                  pattern: {
-                    value: passwordRegex,
-                    message:
-                      "Password must be at least 8 characters, including uppercase, lowercase, number and special character",
-                  },
-                })}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter a password"
+                  id="password"
+                  className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                    errors.password ? "border-red-500" : "border-[#020267]"
+                  } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
+                  {...register("password", {
+                    required: "Password is required!",
+                    pattern: {
+                      value: passwordRegex,
+                      message:
+                        "Password must be at least 8 characters, including uppercase, lowercase, number and special character",
+                    },
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  disabled={state.isLoading}
+                  className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#020267] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {showPassword ? (
+                    <FaEye size={18} />
+                  ) : (
+                    <FaEyeSlash size={18} />
+                  )}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1 w-[350px]">
                   {errors.password.message}
@@ -158,19 +180,35 @@ function SignUp({
               )}
             </div>
             <div className="mb-5">
-              <input
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
-                  errors.confirmPassword ? "border-red-500" : "border-[#020267]"
-                } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
-                id="confirmPassword"
-                placeholder="Confirm password"
-                type="password"
-                {...register("confirmPassword", {
-                  required: "Please confirm your password",
-                  validate: (value) =>
-                    value === Password || "Passwords do not match",
-                })}
-              />
+              <div className="relative">
+                <input
+                  className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                    errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-[#020267]"
+                  } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
+                  id="confirmPassword"
+                  placeholder="Confirm password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password",
+                    validate: (value) =>
+                      value === Password || "Passwords do not match",
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  disabled={state.isLoading}
+                  className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#020267] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {showPassword ? (
+                    <FaEye size={18} />
+                  ) : (
+                    <FaEyeSlash size={18} />
+                  )}
+                </button>
+              </div>
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.confirmPassword.message}

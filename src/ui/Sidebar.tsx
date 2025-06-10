@@ -19,103 +19,120 @@ const Sidebar = () => {
 
   return (
     <Modal>
-      <aside className="h-full bg-white row-span-full">
-        <div className="flex h-screen flex-col px-[2rem] py-[2rem] w-[305.27px] shadow-md">
-          <img
-            src="/ArkPay.png"
-            className="w-[150px] cursor-pointer"
-            alt="Cuddle-me-logo"
-            onClick={() => (window.location.href = "/dashboard")}
-          />
+      <aside className="h-full bg-white border-r border-gray-200 flex flex-col">
+        <div className="flex flex-col h-full px-4 py-6">
+          {/* Logo */}
+          <div className="flex-shrink-0 mb-8">
+            <img
+              src="/ArkPay.png"
+              className="w-32 lg:w-36 cursor-pointer"
+              alt="ArkPay Logo"
+              onClick={() => (window.location.href = "/dashboard")}
+            />
+          </div>
 
-          <div className="mt-[3rem] h-[1200px]">
-            <ul className="flex flex-col gap-5 mt-2">
-              <li className="text-[16.83px] leading-[22.72px] font-normal">
+          {/* Navigation */}
+          <nav className="flex-1">
+            <ul className="space-y-2">
+              <li>
                 <NavLink
                   to="/dashboard"
-                  className={`${({ isActive }) =>
-                    isActive
-                      ? "active"
-                      : ""}} flex items-center gap-[5px] pl-3`}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`
+                  }
                 >
                   <BiCategory size={20} />
-                  <span> Dashboard</span>
+                  <span>Dashboard</span>
                 </NavLink>
               </li>
-              <li className="text-[16.83px] leading-[22.72px] font-normal font-fontThree">
+
+              <li>
                 <NavLink
                   to="/transactions"
-                  className={`${({ isActive }) =>
-                    isActive
-                      ? "active"
-                      : ""}} flex items-center gap-[5px] font-fontThree pl-3`}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`
+                  }
                 >
-                  <GrTransaction />
+                  <GrTransaction size={20} />
                   <span>Transactions</span>
                 </NavLink>
               </li>
-              <li className="text-[16.83px] leading-[22.72px] font-normal font-fontThree">
-                <button className="flex items-center gap-[5px] pl-3">
-                  <BiWalletAlt />
-                  <a
-                    href="https://arkade-base.gitbook.io/arkpay"
-                    target="blank"
-                  >
-                    Documentation
-                  </a>
-                </button>
+
+              <li>
+                <a
+                  href="https://arkade-base.gitbook.io/arkpay"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <BiWalletAlt size={20} />
+                  <span>Documentation</span>
+                </a>
               </li>
-              <li className="text-[16.83px] leading-[22.72px] font-normal font-fontThree">
+
+              <li>
                 <NavLink
                   to="/settings"
-                  className={`${({ isActive }) =>
-                    isActive
-                      ? "active"
-                      : ""}} flex items-center gap-[5px] font-fontThree pl-3`}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`
+                  }
                 >
-                  <FiSettings />
+                  <FiSettings size={20} />
                   <span>Settings</span>
                 </NavLink>
               </li>
-
-              <Modal.Open opens="open">
-                <li className="text-[16.83px] leading-[22.72px] font-normal text-[#EB4E4E] mt-[250px]">
-                  <button className="flex items-center gap-[5px] font-fontThree pl-3 cursor-pointer">
-                    <BiLogOut color="#EB4E4E" />
-                    <span>Logout</span>
-                  </button>
-                </li>
-              </Modal.Open>
-
-              <Modal.Window name="open">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <IoExit size="120px" color="#020267" />
-                  </div>
-
-                  <p className="leading-[100%] text-[21.24px] text-center font-medium w-[243px]">
-                    Oh no! You’re leaving... Are you sure?
-                  </p>
-
-                  <div className="flex flex-col gap-[13.22px]">
-                    <button
-                      className="w-[317px] h-[54.63px] bg-[#020267] text-[#fff] rounded-[6.79px] cursor-pointer mt-5"
-                      onClick={() => navigate("/dashboard")}
-                    >
-                      Nah, just kidding
-                    </button>
-
-                    <button
-                      className="w-[317px] h-[54.63px] border-2 border-[#020267] text-[#020267] rounded-[6.79px] cursor-pointer"
-                      onClick={handleLogout}
-                    >
-                      Yes, log me out
-                    </button>
-                  </div>
-                </div>
-              </Modal.Window>
             </ul>
+          </nav>
+
+          {/* Logout Button */}
+          <div className="flex-shrink-0 mt-auto pt-4 border-t border-gray-200">
+            <Modal.Open opens="open">
+              <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+                <BiLogOut size={20} />
+                <span>Logout</span>
+              </button>
+            </Modal.Open>
           </div>
+
+          <Modal.Window name="open">
+            <div className="flex flex-col items-center justify-center p-6">
+              <div className="flex items-center justify-center mb-4">
+                <IoExit size={80} className="text-blue-900" />
+              </div>
+
+              <p className="text-lg font-medium text-center text-gray-900 mb-6 max-w-xs">
+                Oh no! You're leaving... Are you sure?
+              </p>
+
+              <div className="flex flex-col gap-3 w-full max-w-sm">
+                <button
+                  className="w-full py-3 bg-blue-900 text-white rounded-lg font-medium hover:bg-blue-800 transition-colors"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Nah, just kidding
+                </button>
+
+                <button
+                  className="w-full py-3 border-2 border-blue-900 text-blue-900 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+                  onClick={handleLogout}
+                >
+                  Yes, log me out
+                </button>
+              </div>
+            </div>
+          </Modal.Window>
         </div>
       </aside>
     </Modal>

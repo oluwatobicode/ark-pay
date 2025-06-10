@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthProvider";
 import toast from "react-hot-toast";
 import MiniLoader from "../../ui/MiniLoader";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface logInData {
   email: string;
@@ -23,6 +25,11 @@ function Login({ email, password }: Partial<logInData>) {
 
   const { state, login } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -79,25 +86,40 @@ function Login({ email, password }: Partial<logInData>) {
                 </p>
               )}
             </div>
-            <div className="mb-5 flex flex-col">
-              <input
-                type="password"
-                placeholder="Enter a password"
-                id="password"
-                disabled={state.isLoading}
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
-                  errors.password ? "border-red-500" : "border-[#020267]"
-                } ${
-                  state.isLoading ? "opacity-50 cursor-not-allowed" : ""
-                } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
-                {...register("password", {
-                  required: "Password is required!",
-                  pattern: {
-                    value: passwordRegex,
-                    message: "Password is required!",
-                  },
-                })}
-              />
+            <div className="mb-5 flex flex-col ">
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter a password"
+                  id="password"
+                  disabled={state.isLoading}
+                  className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                    errors.password ? "border-red-500" : "border-[#020267]"
+                  } ${
+                    state.isLoading ? "opacity-50 cursor-not-allowed" : ""
+                  } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
+                  {...register("password", {
+                    required: "Password is required!",
+                    pattern: {
+                      value: passwordRegex,
+                      message: "Password is required!",
+                    },
+                  })}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  disabled={state.isLoading}
+                  className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#020267] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {showPassword ? (
+                    <FaEye size={18} />
+                  ) : (
+                    <FaEyeSlash size={18} />
+                  )}
+                </button>
+              </div>
+
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1 w-[350px]">
                   {errors.password.message}
