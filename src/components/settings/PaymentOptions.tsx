@@ -6,7 +6,7 @@ const PaymentOptions: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [autoOfframp, setAutoOfframp] = useState<boolean>(false);
 
-  const currencies: string[] = ["NGN", "KES", "KSH"];
+  const currencies: string[] = ["NGN", "COMING SOON", "COMING SOON"];
 
   const handleCurrencySelect = (currency: string): void => {
     setSelectedCurrency(currency);
@@ -76,8 +76,9 @@ const PaymentOptions: React.FC = () => {
             Auto offramp
           </span>
           <button
+            disabled={true}
             onClick={() => setAutoOfframp(!autoOfframp)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            className={`cursor-not-allowed relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
               autoOfframp ? "bg-[#020267]" : "bg-gray-300"
             }`}
           >
