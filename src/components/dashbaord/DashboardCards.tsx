@@ -4,12 +4,7 @@ import { useUserData } from "../../contexts/UserDataProvider";
 import { useEffect } from "react";
 
 const DashBoardCards = () => {
-  const {
-    state: userData,
-    getMetrics,
-    getRecentTransactions,
-    clearError,
-  } = useUserData();
+  const { state: userData, getMetrics, getRecentTransactions } = useUserData();
 
   useEffect(() => {
     getMetrics();
