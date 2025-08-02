@@ -31,6 +31,8 @@ function OTPInput({ length = 6, onComplete, disabled = false }: InputProps) {
       inputRef.current[index + 1]?.focus();
     }
 
+    console.log(isVerifying);
+
     // it helps to move to previous input if backspace
     if (input.length === 0 && index > 0) {
       inputRef.current[index - 1]?.focus();

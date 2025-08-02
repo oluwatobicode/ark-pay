@@ -1,14 +1,10 @@
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import Modal from "../../ui/Modal";
-import { FaCheck } from "react-icons/fa6";
-import {
-  useUserData,
-  type UserDataProvider,
-} from "../../contexts/UserDataProvider";
+import { useUserData } from "../../contexts/UserDataProvider";
 import toast from "react-hot-toast";
 
 const ApiUsage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { state, resetApiKey } = useUserData();
 
   const sendResetApiKey = async () => {
