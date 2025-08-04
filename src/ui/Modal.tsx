@@ -9,7 +9,6 @@ import {
 import type { ReactNode, ReactElement } from "react";
 import { createPortal } from "react-dom";
 
-// 1. Define TypeScript interfaces for type safety
 interface ModalContextType {
   close: () => void;
   openName: string;
@@ -21,7 +20,7 @@ interface ModalProps {
 }
 
 interface OpenProps {
-  children: ReactElement<any>; // More flexible typing for cloneElement
+  children: ReactElement<any>;
   opens: string;
 }
 
@@ -30,10 +29,8 @@ interface WindowProps {
   name: string;
 }
 
-// 2. Create context with proper typing
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
-// 3. Custom hook for using the modal context
 const useModal = (): ModalContextType => {
   const context = useContext(ModalContext);
   if (!context) {
@@ -42,7 +39,6 @@ const useModal = (): ModalContextType => {
   return context;
 };
 
-// 4. Custom hook for outside click detection
 const useOutsideClick = (handler: () => void) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -60,7 +56,6 @@ const useOutsideClick = (handler: () => void) => {
   return ref;
 };
 
-// 5. Main Modal component
 const Modal: React.FC<ModalProps> & {
   Open: React.FC<OpenProps>;
   Window: React.FC<WindowProps>;
@@ -70,6 +65,18 @@ const Modal: React.FC<ModalProps> & {
   const close = (): void => setOpenName("");
   const open = (name: string): void => setOpenName(name);
 
+  useEffect(() => {
+    if (openName) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [openName]);
+
   return (
     <ModalContext.Provider value={{ close, openName, open }}>
       {children}
@@ -77,19 +84,33 @@ const Modal: React.FC<ModalProps> & {
   );
 };
 
-// 6. Open component - triggers modal opening
 function Open({ children, opens }: OpenProps): ReactElement {
   const { open } = useModal();
 
   return cloneElement(children, {
-    onClick: () => open(opens),
+    onClick: (e: MouseEvent) => {
+      e.preventDefault();
+      open(opens);
+    },
   });
 }
 
-// 7. Window component - the actual modal content
 function Window({ children, name }: WindowProps): ReactElement | null {
   const { openName, close } = useModal();
   const ref = useOutsideClick(close);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        close();
+      }
+    };
+
+    if (name === openName) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [name, openName, close]);
 
   if (name !== openName) return null;
 
@@ -97,7 +118,7 @@ function Window({ children, name }: WindowProps): ReactElement | null {
     <div className="fixed inset-0 w-full h-screen transition-all duration-500 bg-[#0000004D] backdrop-blur-[4px] z-[1000] flex items-center justify-center p-4">
       <div
         ref={ref}
-        className="bg-white p-6 max-w-md w-[497.31px] h-[400px] rounded-[36.15px] shadow-xl transform transition-all duration-300 scale-100 flex flex-col items-center justify-center"
+        className="bg-white p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:w-[497.31px] min-h-[280px] sm:min-h-[300px] md:min-h-[400px] max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-[36.15px] shadow-xl transform transition-all duration-300 scale-100 flex flex-col items-center justify-center"
       >
         {children}
       </div>
@@ -106,7 +127,6 @@ function Window({ children, name }: WindowProps): ReactElement | null {
   );
 }
 
-// 8. Attach sub-components to main component
 Modal.Open = Open;
 Modal.Window = Window;
 

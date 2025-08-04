@@ -1,17 +1,32 @@
 import { BiBell, BiSearch } from "react-icons/bi";
 import { NavLink } from "react-router";
 import { useAuth } from "../contexts/AuthProvider";
+import { IoMenu } from "react-icons/io5";
+import { CiUser } from "react-icons/ci";
+import { useState } from "react";
 
 const Navbar = () => {
   const { state } = useAuth();
   const user = state?.userData;
 
+  const [showMenu, setShowMenu] = useState<Boolean>(false);
+
+  const handleMenuClick = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const navigationItems = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Transactions", path: "/transactions" },
+    { name: "Documentations", path: "/documentations" },
+    { name: "Settings", path: "/settings" },
+  ];
+
   return (
     <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-4">
-      <nav className="flex items-center justify-between">
+      <nav className="hidden md:flex items-center justify-between">
         <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
 
-        {/* Search - Hidden on mobile, visible on larger screens */}
         <div className="hidden md:block relative">
           <BiSearch
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -26,17 +41,14 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Mobile search button */}
           <button className="md:hidden p-2 text-gray-400 hover:text-gray-600">
             <BiSearch size={20} />
           </button>
 
-          {/* Notification */}
           <button className="p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
             <BiBell size={20} className="text-blue-900" />
           </button>
 
-          {/* User Profile */}
           <NavLink
             to="/user"
             className="flex items-center gap-3 bg-gray-50 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -51,6 +63,49 @@ const Navbar = () => {
             </div>
           </NavLink>
         </div>
+      </nav>
+
+      <nav className="flex md:hidden items-center justify-between">
+        <button onClick={handleMenuClick} className="">
+          <IoMenu size={30} />
+        </button>
+
+        {showMenu && (
+          <div>
+            <div className="py-2">
+              {navigationItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  onClick={handleMenuClick}
+                  className={({ isActive }) =>
+                    `block px-4 py-3 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-blue-600 bg-blue-50"
+                        : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="">
+          <img src="/ArkPay.png" className="w-[142px]" alt="nav-logo" />
+        </div>
+
+        <NavLink
+          to="/user"
+          className="flex items-center gap-3  hover:bg-gray-100 transition-colors"
+        >
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#020267] flex-shrink-0">
+            <CiUser color="#fff" size={20} width={130} />
+          </div>
+          <div className="hidden sm:block text-left"></div>
+        </NavLink>
       </nav>
     </header>
   );

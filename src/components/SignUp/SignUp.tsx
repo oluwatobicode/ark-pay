@@ -63,16 +63,23 @@ function SignUp({
   };
 
   return (
-    <div className="m-10">
+    <div className="md:m-10 m-1">
       <div className="flex items-center justify-center pt-10">
         <div className="" onClick={() => navigate("/")}>
-          <img src="/ArkPay.png" className="w-[200px]" alt="nav-logo" />
+          <img
+            src="/ArkPay.png"
+            className="w-[150px] md:w-[200px]"
+            alt="nav-logo"
+          />
         </div>
       </div>
-      <div className="flex flex-col h-fit p-4  items-center justify-center">
-        <h1 className="text-[36px] font-bold text-[#020267]">Sign up</h1>
-        <p className="font-medium text-[15px] mb-5">
-          Create an account with <span className="font-bold">ArkPay</span>
+      <div className="flex flex-col h-fit p-10 items-center justify-center">
+        <h1 className="text-[16px] md:text-[36px] mb-2 leading-[100%] font-bold text-[#020267]">
+          Sign up
+        </h1>
+        <p className="font-medium text-[16px] md:text-[15px] mb-5">
+          Create an account with{" "}
+          <span className="font-bold text-[16px] md:text-[15px]">ArkPay</span>
         </p>
         <div className="flex flex-col">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -81,7 +88,7 @@ function SignUp({
                 id="firstName"
                 type="firstName"
                 placeholder="First name"
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[347px] h-[70.25px] md:max-w-[443px] px-4 py-3 border-2 ${
                   errors.firstName ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("firstName", {
@@ -103,7 +110,7 @@ function SignUp({
                 id="lastName"
                 type="lastName"
                 placeholder="Last Name"
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[347px] h-[70.25px] md:max-w-[443px]  px-4 py-3 border-2 ${
                   errors.lastName ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("lastName", {
@@ -125,7 +132,7 @@ function SignUp({
                 id="email"
                 type="email"
                 placeholder="Enter your email address"
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[347px] h-[70.25px] md:max-w-[443px]  px-4  md:py-3 border-2 ${
                   errors.password ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("email", {
@@ -148,7 +155,7 @@ function SignUp({
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter a password"
                   id="password"
-                  className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                  className={`w-full max-w-[347px] h-[70.25px] md:max-w-[443px]  px-4 py-3 border-2 ${
                     errors.password ? "border-red-500" : "border-[#020267]"
                   } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                   {...register("password", {
@@ -182,7 +189,7 @@ function SignUp({
             <div className="mb-5">
               <div className="relative">
                 <input
-                  className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                  className={`w-full max-w-[347px] h-[70.25px] md:max-w-[443px]  px-4 py-3 border-2 ${
                     errors.confirmPassword
                       ? "border-red-500"
                       : "border-[#020267]"
@@ -220,7 +227,7 @@ function SignUp({
                 id="country"
                 type="text"
                 placeholder="Country"
-                className={`w-full max-w-[443px] px-4 py-3 border-2 ${
+                className={`w-full max-w-[347px] h-[70.25px] md:max-w-[443px] px-4 py-3 border-2 ${
                   errors.country ? "border-red-500" : "border-[#020267]"
                 } rounded-lg bg-transparent placeholder:text-gray-500 placeholder:font-medium text-base focus:outline-none focus:ring-2 focus:ring-[#020267] focus:border-transparent transition duration-200`}
                 {...register("country", {
@@ -241,7 +248,7 @@ function SignUp({
             <button
               type="submit"
               disabled={Object.keys(errors).length > 0}
-              className="cursor-pointer w-[443px] h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]"
+              className="cursor-pointer w-[347px] h-[58px] md:w-[443px] md:h-[50px] text-textColorSec bg-[#020267] text-white font-medium rounded-md text-[16px]"
             >
               Sign Up
             </button>

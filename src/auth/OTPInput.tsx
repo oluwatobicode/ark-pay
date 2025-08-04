@@ -57,7 +57,6 @@ function OTPInput({ length = 6, onComplete, disabled = false }: InputProps) {
     try {
       setIsVerifying(true);
       setOtp(pinString);
-      console.log("OTP collected:", pinString, "for email:", email);
 
       // this is a brief delay for UX
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -120,32 +119,35 @@ function OTPInput({ length = 6, onComplete, disabled = false }: InputProps) {
         </div>
         <div className="flex flex-col h-fit p-5 items-center justify-center">
           <div className="mb-8 text-center">
-            <h1 className="text-[47px] font-bold leading-[58px] text-[#020267]">
+            <h1 className="text-[32px] md:text-[58px] font-bold leading-[100%] text-[#020267]">
               OTP
             </h1>
-            <p className="font-medium text-[20px]">
-              Please enter the OTP sent to {email}!
+            <p className="font-medium text-[16px] md:text-[23.88px]">
+              Please enter the OTP sent to your email
             </p>
           </div>
-          <div className="flex flex-row items-center mt-2 mb-5">
-            {Array.from({ length }, (_, index) => (
-              <input
-                key={index}
-                type="text"
-                maxLength={1}
-                value={OTP[index]}
-                disabled={disabled || isLoading}
-                onChange={(e) => handleTextChange(e.target.value, index)}
-                ref={(ref) => {
-                  inputRef.current[index] = ref as HTMLInputElement;
-                }}
-                className={`border-2 border-solid rounded-lg text-3xl border-[#020267] p-5 outline-none w-[75px] h-[70px] bg-transparent disabled:opacity-50 disabled:cursor-not-allowed`}
-                style={{ marginRight: index === length - 1 ? "0" : "10px" }}
-              />
-            ))}
+
+          <div className="w-full max-w-sm mx-auto mt-2 mb-5">
+            <div className="flex justify-center gap-2 sm:gap-3">
+              {Array.from({ length }, (_, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength={1}
+                  value={OTP[index]}
+                  disabled={disabled || isLoading}
+                  onChange={(e) => handleTextChange(e.target.value, index)}
+                  ref={(ref) => {
+                    inputRef.current[index] = ref as HTMLInputElement;
+                  }}
+                  className="border-2 border-solid rounded-lg text-2xl sm:text-3xl border-[#020267] p-2 sm:p-3 md:p-5 outline-none bg-transparent disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center aspect-square max-w-[45px] sm:max-w-[55px] md:max-w-[75px]"
+                />
+              ))}
+            </div>
           </div>
+
           <div className="flex flex-col items-center mb-5">
-            <p className="text-[23.88px] font-normal leading-[29.12px] mb-2 text-[#11100BA6]">
+            <p className="text-[16px] md:text-[23.88px] font-normal leading-[100%px] mb-2 text-[#11100BA6]">
               Didn't receive an OTP?
             </p>
             <button
@@ -153,7 +155,7 @@ function OTPInput({ length = 6, onComplete, disabled = false }: InputProps) {
               disabled={disabled || isLoading}
               className="disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <p className="underline text-[20px] font-normal leading-[29.12px] text-textColor">
+              <p className="underline text-[16px] md:text-[23.88px] font-normal leading-[29.12px] text-textColor">
                 {isLoading ? "Resending..." : "Resend OTP?"}
               </p>
             </button>
@@ -176,14 +178,14 @@ function OTPInput({ length = 6, onComplete, disabled = false }: InputProps) {
               <div className="bg-[#020267] w-[80px] h-[80px] rounded-full flex items-center justify-center">
                 <FaCheck color="#fff" size="50px" />
               </div>
-              <h1 className="leading-[100%] text-[32px] font-semibold">
+              <h1 className="leading-[100%] text-[20px] md:text-[32px] font-semibold">
                 Verification Complete
               </h1>
               <p className="text-[14.46px] text-[#000000A6] leading-[100%]">
                 Your OTP has been successfully verified
               </p>
               <button
-                className="w-[317px] h-[54.63px] bg-[#020267] text-[#fff] rounded-[28.12px] cursor-pointer mt-10"
+                className="md:w-[317px] md:h-[54.63px] w-[300px] h-[50px] bg-[#020267] text-[#fff] rounded-[28.12px] cursor-pointer mt-10"
                 onClick={handleResetPasswordClick}
               >
                 Reset Password

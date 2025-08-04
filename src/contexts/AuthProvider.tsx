@@ -221,11 +221,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const response = await axiosInstance.get("/auth/me");
       console.log("Auth check response:", response.status, response.data);
 
-      if (response.data) {
+      if (response.data && response.data.user) {
         console.log(response.data);
+
+        dispatch({
+          type: "AUTH_SUCCESS",
+          payload: {
+            id: response.data.user.id,
+            email: response.data.user.email,
+            country: response.data.user.country,
+          },
+        });
+
         dispatch({ type: "AUTH_USER_DATA", payload: response.data });
       } else {
         console.log("Invalid user data structure:", response.data);
+        dispatch({ type: "LOGOUT" });
       }
     } catch (error) {
       const err = error as AxiosError<{ error?: string }>;

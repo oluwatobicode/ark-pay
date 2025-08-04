@@ -47,12 +47,10 @@ const UserVerifyEmail = () => {
       }
 
       toast.success(
-        `Reset instructions sent to ${formData.email}. Please check your inbox.`
+        `Reset instructions sent to your email, Please check your inbox.`
       );
-      console.log("Sending reset email to:", formData.email);
       goToNextStep();
     } catch (error) {
-      console.error("Failed to send reset email:", error);
     } finally {
       setIsLoading(false);
     }

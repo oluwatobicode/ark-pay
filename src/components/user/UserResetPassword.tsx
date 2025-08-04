@@ -81,10 +81,10 @@ const UserResetPassword = () => {
         </div>
 
         <div className="text-center space-y-1">
-          <h1 className="text-[30px] font-semibold text-gray-900">
+          <h1 className="md:text-[30px] text-[32px] font-semibold text-gray-900">
             Reset Password
           </h1>
-          <p className="text-[17px] font-medium text-gray-600">
+          <p className="md:text-[17px] text-[16px] font-medium text-gray-600">
             Enter a new password for {email}
           </p>
         </div>

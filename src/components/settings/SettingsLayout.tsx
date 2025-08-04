@@ -4,8 +4,9 @@ import PaymentOptions from "./PaymentOptions";
 
 const SettingsLayout = () => {
   return (
-    <div className="px-[2rem] pt-[1rem]">
+    <div className="   md:px-[2rem] pt-[1rem] ">
       <div>
+        {/*  */}
         <PaymentOptions />
         <ApiUsage />
         <Metrics />

@@ -1,9 +1,9 @@
-import TransactionsLayout from "../components/transactions/TransactionsLayout";
+import TransactionTable from "../components/transactions/TransactionsLayoutDesktop";
 
 const Transactions = () => {
   return (
-    <div>
-      <TransactionsLayout />
+    <div className="px-[2rem]">
+      <TransactionTable />
     </div>
   );
 };

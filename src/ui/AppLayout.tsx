@@ -12,7 +12,7 @@ const AppLayout = () => {
   }, []);
 
   return (
-    <section className="grid grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] grid-rows-[auto_1fr] h-screen overflow-hidden">
+    <section className="grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] grid-rows-[auto_1fr] h-screen overflow-hidden">
       <Sidebar />
       <div className="flex flex-col overflow-hidden">
         <Navbar />

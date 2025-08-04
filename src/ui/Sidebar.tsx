@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   return (
     <Modal>
-      <aside className="h-full bg-white border-r border-gray-200 flex flex-col">
+      <aside className="h-full bg-white border-r border-gray-200 md:flex flex-col hidden">
         <div className="flex flex-col h-full px-4 py-6">
           {/* Logo */}
           <div className="flex-shrink-0 mb-8">
