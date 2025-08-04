@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: "Transactions", path: "/transactions" },
     { name: "Documentations", path: "/documentations" },
     { name: "Settings", path: "/settings" },
+    { name: "Logout", path: "/login" },
   ];
 
   return (
@@ -65,13 +66,13 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <nav className="flex md:hidden items-center justify-between">
+      <nav className="flex md:hidden items-center justify-between relative">
         <button onClick={handleMenuClick} className="">
           <IoMenu size={30} />
         </button>
 
         {showMenu && (
-          <div>
+          <div className="absolute top-16 left-4 right-4 z-50 bg-white rounded-md shadow-lg border border-gray-200">
             <div className="py-2">
               {navigationItems.map((item) => (
                 <NavLink

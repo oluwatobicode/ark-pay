@@ -234,64 +234,65 @@ const Table: React.FC = () => {
           <thead className="bg-[#F7F8F7]">
             <tr>
               <th
-                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("createdAt")}
               >
-                Date Created
+                Date
               </th>
               <th
-                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("amount")}
               >
                 Amount
               </th>
               <th
-                className="hidden md:inline-block px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="hidden md:table-cell px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("token")}
               >
                 Token
               </th>
               <th
-                className="hidden md:inline-block px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="hidden md:table-cell px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("network")}
               >
                 Network
               </th>
               <th
-                className="hidden md:inline-block px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="hidden md:table-cell px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("status")}
               >
                 Status
               </th>
               <th
-                className="hidden md:inline-block px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="hidden md:table-cell px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("orderId")}
               >
                 Order ID
               </th>
             </tr>
           </thead>
+
           <tbody className="bg-white">
             {paginatedTransactions.map((transaction) => (
               <tr key={transaction._id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%] text-[#333333]">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#333333]">
                   {formatDate(transaction.createdAt)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%]">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   {transaction.amount} {transaction.token}
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%]">
+                <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm font-medium">
                   {transaction.token}
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%]">
+                <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm font-medium">
                   {transaction.network}
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap">
+                <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <Status types={getPaymentStatus(transaction.validUntil)}>
                     {getPaymentStatus(transaction.validUntil)}
                   </Status>
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%] text-sm">
+                <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm font-medium">
                   {transaction.orderId
                     ? transaction.orderId.substring(0, 8) + "..."
                     : "N/A"}
@@ -318,14 +319,10 @@ const Table: React.FC = () => {
       </div>
 
       {filteredAndSortedTransactions.length > 0 && (
-        <div className="flex items-center justify-between mt-6 px-6 py-3 bg-white border-t border-gray-200">
+        <div className="hidden md:flex items-center justify-between mt-6 px-6 py-3 bg-white border-t border-gray-200">
           <div className="text-sm text-gray-700">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(
-              currentPage * itemsPerPage,
-              filteredAndSortedTransactions.length
-            )}{" "}
-            of {filteredAndSortedTransactions.length} results
+            Showing {(currentPage - 1) * itemsPerPage + 1} of{" "}
+            {filteredAndSortedTransactions.length} results
           </div>
 
           <div className="flex items-center space-x-2">
@@ -379,7 +376,7 @@ const Table: React.FC = () => {
         </div>
       )}
 
-      <div className="flex justify-end md:hidden">
+      <div className="flex justify-end md:hidden mt-5">
         <button
           onClick={() => {
             navigate("/transactions");

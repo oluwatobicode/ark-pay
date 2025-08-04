@@ -96,7 +96,6 @@ const Sidebar = () => {
             </ul>
           </nav>
 
-          {/* Logout Button */}
           <div className="flex-shrink-0 mt-auto pt-4 border-t border-gray-200">
             <Modal.Open opens="open">
               <button className="w-full  cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">

@@ -6,7 +6,6 @@ import Status from "../../ui/Status";
 const TransactionTable: React.FC = () => {
   const { state, getRecentTransactions } = useUserData();
 
-  // Table operation states
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState({
     startDate: "",
@@ -119,7 +118,7 @@ const TransactionTable: React.FC = () => {
   };
 
   return (
-    <div className="mt-10 min-h-screen">
+    <div className="mt-10">
       <div className="flex justify-between items-center mb-6">
         <h2 className="md:text-[22.59px] md:leading-[100%] text-[17px] leading-[100%] font-semibold">
           Recent Transactions
@@ -129,39 +128,38 @@ const TransactionTable: React.FC = () => {
         </span>
       </div>
 
+      {/* Table Operations */}
       <div className="mb-6 space-y-4">
-        {/* Search bar - full width on all screens */}
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="flex flex-wrap gap-4 items-center">
+          <div className="relative flex-1 min-w-[200px]">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg
+                className="h-5 w-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Find transaction..."
+              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Date Range Filter */}
+          <div className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md">
             <svg
               className="h-5 w-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-          <input
-            type="text"
-            placeholder="Find transaction..."
-            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        {/* Date range and Sort filters - side by side on mobile, flexible on larger screens */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          {/* Date Range Filter */}
-          <div className="flex items-center gap-2 flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-md">
-            <svg
-              className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -175,18 +173,16 @@ const TransactionTable: React.FC = () => {
             </svg>
             <input
               type="date"
-              className="border-none outline-none text-xs sm:text-sm flex-1 min-w-0 date-input"
+              className="border-none outline-none text-sm date-input"
               value={dateRange.startDate}
               onChange={(e) =>
                 setDateRange((prev) => ({ ...prev, startDate: e.target.value }))
               }
             />
-            <span className="text-gray-400 text-xs sm:text-sm flex-shrink-0">
-              -
-            </span>
+            <span className="text-gray-400">-</span>
             <input
               type="date"
-              className="border-none outline-none text-xs sm:text-sm flex-1 min-w-0 date-input"
+              className="border-none outline-none text-sm date-input"
               value={dateRange.endDate}
               onChange={(e) =>
                 setDateRange((prev) => ({ ...prev, endDate: e.target.value }))
@@ -194,10 +190,9 @@ const TransactionTable: React.FC = () => {
             />
           </div>
 
-          {/* Sort Filter */}
-          <div className="flex items-center gap-2 flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-md">
+          <div className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md">
             <svg
-              className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0"
+              className="h-5 w-5 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -210,7 +205,7 @@ const TransactionTable: React.FC = () => {
               />
             </svg>
             <select
-              className="border-none outline-none text-xs sm:text-sm bg-transparent flex-1 min-w-0"
+              className="border-none outline-none text-sm bg-transparent"
               value={`${sortBy}-${sortOrder}`}
               onChange={(e) => {
                 const [column, order] = e.target.value.split("-");
@@ -230,69 +225,70 @@ const TransactionTable: React.FC = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      {/* Table */}
+      <div className="w-full overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-[#F7F8F7]">
             <tr>
               <th
-                className="px-6 py-3 text-[9.1px] md:text-[14.05px] leading-[100%] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("createdAt")}
               >
                 Date
               </th>
               <th
-                className="px-6 py-3 text-[9.1px] md:text-[14.05px] leading-[100%]  text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("amount")}
               >
                 Amount
               </th>
               <th
-                className="px-6 py-3 text-[9.1px] md:text-[14.05px] leading-[100%]  text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("token")}
               >
                 Token
               </th>
               <th
-                className="px-6 py-3 text-[9.1px] md:text-[14.05px] leading-[100%]  text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("network")}
               >
                 Network
               </th>
               <th
-                className="px-6 py-3 text-[9.1px] md:text-[14.05px] leading-[100%]  text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("status")}
               >
                 Status
               </th>
               <th
-                className="hidden md:inline-block px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-[14.05px] text-left text-xs font-semibold text-black uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort("orderId")}
               >
                 Order ID
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-white ">
             {paginatedTransactions.map((transaction) => (
               <tr key={transaction._id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap font-medium text-[9.1px] md:text-[14.05px]  leading-[100%] text-[#333333]">
+                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%] text-[#333333]">
                   {formatDate(transaction.createdAt)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap font-medium text-[9.1px] md:text-[14.05px] leading-[100%]">
+                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%]">
                   {transaction.amount} {transaction.token}
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap font-medium text-[9.1px] md:text-[14.05px]  leading-[100%]">
+                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%]">
                   {transaction.token}
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap font-medium text-[9.1px] md:text-[14.05px]  leading-[100%]">
+                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%]">
                   {transaction.network}
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap">
+                <td className=" px-6 py-4 whitespace-nowrap">
                   <Status types={getPaymentStatus(transaction.validUntil)}>
                     {getPaymentStatus(transaction.validUntil)}
                   </Status>
                 </td>
-                <td className="hidden md:block px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%] text-sm">
+                <td className="px-6 py-4 whitespace-nowrap font-medium text-[14.05px] leading-[100%] text-sm">
                   {transaction.orderId
                     ? transaction.orderId.substring(0, 8) + "..."
                     : "N/A"}
@@ -319,16 +315,7 @@ const TransactionTable: React.FC = () => {
       </div>
 
       {filteredAndSortedTransactions.length > 0 && (
-        <div className="flex items-center justify-between mt-6 px-6 py-3 bg-white border-t border-gray-200">
-          <div className="text-sm text-gray-700">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(
-              currentPage * itemsPerPage,
-              filteredAndSortedTransactions.length
-            )}{" "}
-            of {filteredAndSortedTransactions.length} results
-          </div>
-
+        <div className="hidden items-center justify-between mt-6 px-6 py-3 bg-white border-t border-gray-200">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
