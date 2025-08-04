@@ -15,48 +15,66 @@ const DashBoardCards = () => {
   const totalAmountProcessed = userData.metrics?.totalAmountProcessed || 0;
   const completedPayouts = userData.metrics?.completedPayouts || 0;
 
+  const cardData = [
+    {
+      title: "Total transactions",
+      value: totalTransactions.toLocaleString(),
+      icon: (
+        <GrTransaction
+          size="24"
+          color="#fff"
+          className="sm:w-6 sm:h-6 md:w-7 md:h-7"
+        />
+      ),
+      bgColor: "bg-[#264697]",
+    },
+    {
+      title: "Total Amount Processed",
+      value: `$${totalAmountProcessed.toLocaleString()}`,
+      icon: (
+        <img
+          src="/circular.png"
+          alt="circular-png"
+          className="w-6 h-6 sm:w-7 sm:h-7"
+        />
+      ),
+      bgColor: "bg-[#264697]",
+    },
+    {
+      title: "Completed Pay-outs",
+      value: completedPayouts.toString(),
+      icon: (
+        <FaPeopleGroup
+          size="24"
+          color="#fff"
+          className="sm:w-6 sm:h-6 md:w-7 md:h-7"
+        />
+      ),
+      bgColor: "bg-[#264697]",
+    },
+  ];
+
   return (
-    <section className="flex flex-col md:flex-row items-center justify-start gap-[25px]">
-      <div className="bg-white flex border border-[#ACACAC] md:border-0 items-center shadow-[0px_0px_10.9px_0px_rgba(0,0,0,0.1)] justify-center gap-5 w-[301.19px] h-[110px] rounded-[15.43px]">
-        <div className="">
-          <h1 className="text-[17.23px] md:text-[15.76px] leading-[21.09px] md:leading-[19.29px] font-medium text-[#475467]">
-            Total transactions
-          </h1>
-          <p className="text-[20.79px] leading-[100%] md:text-[19.01px] md:leading-[28.93px] font-semibold">
-            {`${totalTransactions.toLocaleString()}`}
-          </p>
-        </div>
-        <div className="bg-[#264697] p-2 rounded-full">
-          <GrTransaction size="30" color="#fff" />
-        </div>
-      </div>
-
-      <div className="bg-white border border-[#ACACAC] md:border-0 flex items-center shadow-[0px_0px_10.9px_0px_rgba(0,0,0,0.1)] justify-center gap-5 w-[301.19px] h-[110px] rounded-[15.43px]">
-        <div className="">
-          <h1 className="text-[17.23px] leading-[21.09px] md:text-[15.76px] md:leading-[19.29px]  font-medium text-[#475467]">
-            Total Amount Processed
-          </h1>
-          <p className="text-[20.79px] md:text-[19.01px] leading-[31.63px] md:leading-[28.93px] font-semibold">
-            {`$${totalAmountProcessed.toLocaleString()}`}
-          </p>
-        </div>
-        <div className="bg-[#264697] p-2 rounded-full">
-          <img src="/circular.png" alt="circular-png" className="w-[30px]" />
-        </div>
-      </div>
-
-      <div className="w-[301.19px] h-[110px] rounded-[15.43px] border border-[#ACACAC] md:border-0 bg-white shadow-[0px_0px_10.9px_0px_rgba(0,0,0,0.1)] flex items-center justify-center gap-5">
-        <div className="">
-          <h1 className="md:text-[15.76px] text-[17.23px] leading-[100%] font-medium text-[#475467]">
-            Completed Pay-outs
-          </h1>
-          <p className="md:text-[19.01px] text-[20.79px] leading-[31.63px] md:leading-[28.93px] font-semibold ">
-            {`${completedPayouts}`}
-          </p>
-        </div>
-        <div className="bg-[#264697] p-2 rounded-full">
-          <FaPeopleGroup size="30" color="#fff" />
-        </div>
+    <section className="w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto px-4 sm:px-0">
+        {cardData.map((card, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-300 md:border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-2xl p-4 sm:p-6 min-h-[110px] flex items-center justify-between w-full"
+          >
+            <div className="flex-1 pr-4">
+              <h1 className="text-sm sm:text-base font-medium text-gray-600 mb-2 leading-tight">
+                {card.title}
+              </h1>
+              <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 leading-tight break-all">
+                {card.value}
+              </p>
+            </div>
+            <div className={`${card.bgColor} p-3 rounded-full flex-shrink-0`}>
+              {card.icon}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -117,25 +117,28 @@ const UserForm = ({
   };
 
   return (
-    <div className="px-[2rem] pt-[1rem]">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+    <div className="px-4 sm:px-6 lg:px-8 pt-4 max-w-7xl mx-auto">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-800">
         User Information
       </h2>
 
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-row gap-[25px] flex-wrap">
-          <div>
+      <form
+        className="space-y-4 sm:space-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <div className="col-span-1">
             <label
               htmlFor="FirstName"
-              className="block text-sm text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 mb-2"
             >
-              FirstName
+              First Name
             </label>
             <input
               id="FirstName"
               type="text"
               placeholder="Enter your first name"
-              className="md:w-[350px] w-[324px] px-3 py-2 border border-gray-300 rounded-[6px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("FirstName", {
                 required: "First name is required",
                 minLength: {
@@ -151,7 +154,7 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="LastName"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -162,7 +165,7 @@ const UserForm = ({
               id="LastName"
               type="text"
               placeholder="Enter your last name"
-              className="md:w-[350px] w-[324px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("LastName", {
                 required: "Last name is required!",
                 minLength: {
@@ -178,7 +181,7 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="Email"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -188,7 +191,7 @@ const UserForm = ({
             <input
               type="email"
               placeholder="Enter your email address"
-              className="md:w-[350px] w-[324px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               id="Email"
               {...register("Email", {
                 required: "Email is required!",
@@ -205,7 +208,7 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="Country"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -216,7 +219,7 @@ const UserForm = ({
               id="Country"
               type="text"
               placeholder="Country"
-              className="md:w-[350px] w-[324px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("Country", {
                 required: "Country is required!",
                 minLength: {
@@ -232,20 +235,20 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="UserId"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              User Id
+              User ID
             </label>
             <input
               id="UserId"
               type="text"
-              placeholder="Enter your User Id"
-              className="md:w-[350px] w-[324px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter your User ID"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("UserId", {
-                required: "User Id is required!",
+                required: "User ID is required!",
               })}
             />
             {errors?.UserId && (
@@ -255,23 +258,23 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="BankName"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Bank name
+              Bank Name
             </label>
             <input
               id="BankName"
               type="text"
               placeholder="Enter bank name"
-              className="md:w-[350px] w-[324px]  px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("BankName", {
                 required: "Bank name is required!",
                 minLength: {
-                  value: 1,
-                  message: "BankName must be at least 2 characters",
+                  value: 2,
+                  message: "Bank name must be at least 2 characters",
                 },
               })}
             />
@@ -282,7 +285,7 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="AccountNumber"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -292,8 +295,8 @@ const UserForm = ({
             <input
               id="AccountNumber"
               type="text"
-              placeholder="Enter bank account"
-              className="md:w-[350px] w-[324px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter account number"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("AccountNumber", {
                 required: "Account number is required!",
               })}
@@ -305,7 +308,7 @@ const UserForm = ({
             )}
           </div>
 
-          <div>
+          <div className="col-span-1">
             <label
               htmlFor="AccountName"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -316,7 +319,7 @@ const UserForm = ({
               id="AccountName"
               type="text"
               placeholder="Enter account name"
-              className="md:w-[350px] w-[324px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               {...register("AccountName", {
                 required: "Account name is required!",
               })}
@@ -327,20 +330,20 @@ const UserForm = ({
               </p>
             )}
           </div>
+        </div>
 
-          <div className="ml-auto">
-            <button
-              type="submit"
-              disabled={!hasChanges}
-              className={`py-2 px-10 rounded-[4px] focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-200 ${
-                hasChanges
-                  ? "bg-[#020267] hover:bg-[#020267] text-white cursor-pointer focus:ring-[#020267]"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-            >
-              {hasChanges ? "Save Changes" : "Edit"}
-            </button>
-          </div>
+        <div className="flex justify-end pt-4">
+          <button
+            type="submit"
+            disabled={!hasChanges}
+            className={`py-2 px-6 sm:px-8 lg:px-10 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-200 text-sm sm:text-base ${
+              hasChanges
+                ? "bg-[#020267] hover:bg-[#020267] text-white cursor-pointer focus:ring-[#020267]"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            {hasChanges ? "Save Changes" : "Edit"}
+          </button>
         </div>
       </form>
     </div>

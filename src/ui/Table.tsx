@@ -382,7 +382,7 @@ const Table: React.FC = () => {
       <div className="flex justify-end md:hidden">
         <button
           onClick={() => {
-            navigate("/settings");
+            navigate("/transactions");
           }}
           className="text-white w-[100px] h-[32px] rounded-[4px] bg-[#020267]"
         >
