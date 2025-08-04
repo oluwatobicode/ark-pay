@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 import { BiBell, BiSearch } from "react-icons/bi";
-import { NavLink } from "react-router";
-import { useAuth } from "../contexts/AuthProvider";
+import { IoMdClose } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 import { CiUser } from "react-icons/ci";
-import { useState } from "react";
+
+import { NavLink } from "react-router";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Navbar = () => {
   const { state } = useAuth();
@@ -18,7 +21,7 @@ const Navbar = () => {
   const navigationItems = [
     { name: "Dashboard", path: "/dashboard" },
     { name: "Transactions", path: "/transactions" },
-    { name: "Documentations", path: "/documentations" },
+    { name: "Documentations", path: "https://arkade-base.gitbook.io/arkpay" },
     { name: "Settings", path: "/settings" },
     { name: "Logout", path: "/login" },
   ];
@@ -68,7 +71,7 @@ const Navbar = () => {
 
       <nav className="flex md:hidden items-center justify-between relative">
         <button onClick={handleMenuClick} className="">
-          <IoMenu size={30} />
+          {showMenu ? <IoMdClose /> : <IoMenu size={30} />}
         </button>
 
         {showMenu && (
